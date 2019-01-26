@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0ee5268c4b15c490fb307a029be8bd52, type: 3}
-  m_Color: {r: 0, g: 0.98000383, b: 1, a: 0.015686275}
+  m_Color: {r: 0, g: 0.98000383, b: 1, a: 0.011764706}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -192,7 +192,7 @@ MonoBehaviour:
   speed: {x: -0.14839222, y: 0.51140094, z: 0.4767049}
   accel: {x: -0.3020239, y: 0.11075902, z: 0.07043537}
   thrust: 1
-  baseMaxSpeed: 1
+  baseMaxSpeed: 1.5
   deltaMaxSpeed: 0.1
 --- !u!114 &9195560870698094993
 MonoBehaviour:
