@@ -24,4 +24,8 @@ public class Planet : MonoBehaviour
         return transform.position + orbitRadius * delta;
     }
 
+    public void ColonizedByPlayer(Player player) {
+        // TODO: Make shader to identify planet as belonging to the player
+    }
+
 }
