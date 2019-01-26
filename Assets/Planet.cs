@@ -16,7 +16,7 @@ public class Planet : MonoBehaviour
 
     private void Start()
     {
-        GameController.instance.planets.Add(this);
+        GameManager.instance.planets.Add(this);
     }
 
     public Vector3 GetOrbitPosition(float randomValue)
