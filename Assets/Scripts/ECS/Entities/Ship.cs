@@ -101,5 +101,4 @@ public class Ship : MonoBehaviour
 		currentBullet.CancelTarget();
 		currentTarget = null;
 	}
-
 }

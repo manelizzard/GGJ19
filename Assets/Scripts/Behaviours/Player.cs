@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 	HFTGamepad hftGamepad;
 
 	float lastCommandTime = -10;
-
+    [HideInInspector] public int shipCount = 0;
 	[HideInInspector] public Vector3 averagePosition;
 
 	private void Awake()
@@ -40,16 +40,15 @@ public class Player : MonoBehaviour
 		playerMaterial = new Material(Shader.Find("Specular"));
 		playerMaterial.color = color;
 
-		// Create a material copy
-		playerShipMaterial = Material.Instantiate(playerShipMaterial);
-		playerShipMaterial.SetColor("_Color", color);
-		playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
-		playerPlanetMaterial.SetColor("_Color", color);
-
-		attackLineRenderer.startColor = color;
-		attackLineRenderer.endColor = color;
-		GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
-		GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
+        // Create a material copy
+        playerShipMaterial = Material.Instantiate(playerShipMaterial);
+        playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
+        playerShipMaterial.SetColor("_Color", color);
+        playerPlanetMaterial.SetColor("_Color", color);
+        attackLineRenderer.startColor = color;
+        attackLineRenderer.endColor = color;
+        GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
+        GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
 
 		// Spawn ships
 		SpawnShips();
@@ -99,17 +98,25 @@ public class Player : MonoBehaviour
 		attackLineRenderer.enabled = attackedRightNow;
 	}
 
-	private void LateUpdate()
-	{
-		averagePosition = Vector3.zero;
-		foreach (var ship in ships)
-		{
-			if (ship != null)
-			{
-				averagePosition += ship.transform.position;
-			}
-		}
-		averagePosition = averagePosition / ships.Count;
-	}
-
+    private void LateUpdate()
+    {
+        averagePosition = Vector3.zero;
+        shipCount = 0;
+        foreach (var ship in ships)
+        {
+            if (ship != null)
+            {
+                shipCount++;
+                averagePosition += ship.transform.position;
+            }
+        }
+        if (shipCount!=0)
+        {
+            averagePosition = averagePosition / shipCount;
+        }
+        else
+        {
+            averagePosition = Vector3.zero;
+        }
+    }
 }

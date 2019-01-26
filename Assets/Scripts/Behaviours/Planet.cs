@@ -8,7 +8,6 @@ using System;
 
 public class Planet : MonoBehaviour
 {
-
 	public List<Ship> inhabitants;
 
 	public float radius = 1f;
@@ -129,5 +128,4 @@ public class Planet : MonoBehaviour
 			//TODO: We would need to add this new ship to GameController in the job system
 		}
 	}
-
 }
