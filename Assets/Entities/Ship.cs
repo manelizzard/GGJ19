@@ -12,12 +12,20 @@ public class Ship : MonoBehaviour
 
     public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue); } }
 
+    private MeshRenderer meshRenderer;
+
     private void Awake()
     {
         randomValue = Random.value;
         transform.position += Random.insideUnitSphere;
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 
+    public void SetMaterial(Material material) 
+    {
+        meshRenderer.material = material;
+    }
+    
     public void GetTarget()
     {
         var planets = GameManager.instance.planets;
