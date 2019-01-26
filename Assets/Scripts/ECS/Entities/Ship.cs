@@ -10,18 +10,19 @@ public class Ship : MonoBehaviour
     public Bullet bulletPrefab;
     public GameObject explosionPrefab;
     public TrailRenderer trailRenderer;
+    public SpriteRenderer haloRenderer;
 
     [Range(-1f, 1f)]
     public float shootAlignment = 0.5f;
 
-    float randomValue;
+    float randomValue, randomValue2;
     public Player owner { get; private set; }
 
     public float shootOffset = 0.5f;
     public float avoidRadius = 0.5f;
     public float avoidThrust = 1f;
 
-    public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue); } }
+    public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue, randomValue2); } }
 
     private MeshRenderer meshRenderer;
 
@@ -32,6 +33,7 @@ public class Ship : MonoBehaviour
     private void Awake()
     {
         randomValue = Random.value;
+        randomValue2 = Random.value;
         transform.position += Random.insideUnitSphere;
         meshRenderer = GetComponent<MeshRenderer>();
     }
@@ -86,6 +88,7 @@ public class Ship : MonoBehaviour
         currentTarget = player.initialPlanet;
         trailRenderer.startColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
         trailRenderer.endColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
+        haloRenderer.color = new Color(player.color.r, player.color.g, player.color.b, haloRenderer.color.a);
     }
 
     void NullifyTarget()
