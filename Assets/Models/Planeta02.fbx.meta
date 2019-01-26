@@ -14,6 +14,7 @@ ModelImporter:
     100016: Fabrica
     100018: Planeta01
     100020: Plataforma
+    100022: AbetoS
     400000: Baobab
     400002: Cilindro
     400004: Cubo
@@ -25,6 +26,7 @@ ModelImporter:
     400016: Fabrica
     400018: Planeta01
     400020: Plataforma
+    400022: AbetoS
     2100000: Texturas
     2300000: Baobab
     2300002: Cilindro
@@ -35,6 +37,7 @@ ModelImporter:
     2300012: Fabrica
     2300014: Planeta01
     2300016: Plataforma
+    2300018: AbetoS
     3300000: Baobab
     3300002: Cilindro
     3300004: Cubo
@@ -44,6 +47,7 @@ ModelImporter:
     3300012: Fabrica
     3300014: Planeta01
     3300016: Plataforma
+    3300018: AbetoS
     4300000: Cubo.001
     4300002: Cubo
     4300004: Baobab
@@ -53,6 +57,7 @@ ModelImporter:
     4300012: Fabrica
     4300014: Planeta01
     4300016: Abeto
+    4300018: AbetoS
     10800000: Sol
   externalObjects: {}
   materials:
