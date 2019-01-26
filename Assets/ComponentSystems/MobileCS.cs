@@ -14,7 +14,7 @@ public class MobileCS : ComponentSystem
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.deltaTime;
+        /*float deltaTime = Time.deltaTime;
 
         foreach (var entity in GetEntities<Components>())
         {
@@ -27,7 +27,7 @@ public class MobileCS : ComponentSystem
             entity.transform.position = currentMobile.position;
 
             currentMobile.accel = Vector3.zero;
-        }
+        }*/
     }
 
 }
