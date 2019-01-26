@@ -5,19 +5,20 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager instance { get { if (instance_ == null) { instance_ = FindObjectOfType<GameManager>(); }; return instance_; } }
-    static GameManager instance_;
+	public static GameManager instance { get { if (instance_ == null) { instance_ = FindObjectOfType<GameManager>(); }; return instance_; } }
+	static GameManager instance_;
+	public PlayersInfo PlayersInfo { get { return PlayersInfo.instance; } }
 
-    public PlanetCursor cursor;
-    public List<Planet> planets;
+	public PlanetCursor cursor;
+	public List<Planet> planets;
 
 	[HideInInspector]
 	public List<Player> players;
 
-    public Dictionary<int, List<Planet>> playerPlanets;
-    private void Awake()
-    {
-        playerPlanets = new Dictionary<int, List<Planet>>();
-    }
+	public Dictionary<int, List<Planet>> playerPlanets;
+	private void Awake()
+	{
+		playerPlanets = new Dictionary<int, List<Planet>>();
+	}
 
 }
