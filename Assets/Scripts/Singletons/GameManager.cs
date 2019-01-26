@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance { get { if (instance_ == null) { instance_ = FindObjectOfType<GameManager>(); }; return instance_; } }
     static GameManager instance_;
 
@@ -15,9 +14,23 @@ public class GameManager : MonoBehaviour
 	public List<Player> players;
 
     public Dictionary<int, List<Planet>> playerPlanets;
+
+    public GameObject shipPrefab;
+    public GameObject playerPrefab;
+
     private void Awake()
     {
         playerPlanets = new Dictionary<int, List<Planet>>();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ObjectPool.Spawn(playerPrefab);
+        }
+    }
+
+
 
 }
