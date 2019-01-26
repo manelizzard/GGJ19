@@ -15,7 +15,7 @@ public class ShipCS : ComponentSystem
 
     protected override void OnUpdate()
     {
-        /*float deltaTime = Time.deltaTime;
+        float deltaTime = Time.deltaTime;
 
         foreach (var entity in GetEntities<Components>())
         {
@@ -32,7 +32,7 @@ public class ShipCS : ComponentSystem
                 Vector3 delta = currentShip.orbitPosition - entity.transform.position;
                 currentMobile.accel = delta * currentMobile.thrust;
             }
-        }*/
+        }
     }
 
 }
