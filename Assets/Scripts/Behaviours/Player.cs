@@ -9,9 +9,8 @@ public class Player : MonoBehaviour
 
 	public Material playerMaterial;
 
-	// Instantiation
-	private HFTInput hftInput;
-	private HFTGamepad hftGamepad;
+    public Material playerShipMaterial;
+    public Material playerPlanetMaterial;
 
 	// Data
 	public string displayName = "Player";
@@ -20,20 +19,36 @@ public class Player : MonoBehaviour
 	public List<Ship> ships;
 	public Planet initialPlanet;
 
-	void Awake()
-	{
-		ships = new List<Ship>();
-		hftInput = GetComponent<HFTInput>();
-		hftGamepad = GetComponent<HFTGamepad>();
+    // Data
+    public string displayName = "Player";
+    public int playerId = -1;
+    public Color color = Color.blue;
+    public List<Ship> ships;
+    public Planet initialPlanet;
+    public LineRenderer attackLineRenderer;
+
+    Planet previousTarget;
+    public Planet currentTarget;
+
+    float lastCommandTime = -10;
+
+    [HideInInspector]public Vector3 averagePosition;
 
 		playerId = GetInstanceID();
 		color = hftGamepad.color;
 		playerMaterial = new Material(Shader.Find("Specular"));
 		playerMaterial.color = color;
 
-		// Assign random planet to spawned player
-		GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
-		GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
+        playerId = GetInstanceID();
+        color = hftGamepad.color;
+
+        // Create a material copy
+        playerShipMaterial = Material.Instantiate(playerShipMaterial);
+        playerShipMaterial.SetColor("_Color", color);
+        playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
+        playerPlanetMaterial.SetColor("_Color", color);
+        attackLineRenderer.startColor = color;
+        attackLineRenderer.endColor = color;
 
 		// Spawn ships
 		SpawnShips();
@@ -45,34 +60,57 @@ public class Player : MonoBehaviour
 		GameManager.instance.PlayersInfo.AddPlayerInfo(this);
 	}
 
-	private void SpawnShips()
-	{
-		initialPlanet = GameManager.instance.playerPlanets[playerId][0];
-		for (int i = 0; i < startingShips; i++)
-		{
-			// Instantiate in first planet
-			GameObject go = Instantiate(shipPrefab, this.transform);
-			go.transform.position = initialPlanet.transform.position;
-			Ship shipModel = go.GetComponent<Ship>();
-			ships.Add(shipModel);
-			shipModel.SetOwner(this);
-			shipModel.SetMaterial(playerMaterial);
-		}
+	private void SpawnShips() 
+    {
+        initialPlanet = GameManager.instance.playerPlanets[playerId][0];
+        previousTarget = initialPlanet;
+        currentTarget = initialPlanet;
+
+        for (int i = 0; i < startingShips; i++) 
+        {
+            // Instantiate in first planet
+            GameObject go = Instantiate(shipPrefab, this.transform);
+            go.transform.position = initialPlanet.transform.position;
+            Ship shipModel = go.GetComponent<Ship>();
+            ships.Add(shipModel);
+            shipModel.SetOwner(this);
+            shipModel.SetMaterial(playerShipMaterial);
+        }
 		GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
 		GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintPlanetsCount();
-	}
+    }
 
-	void Update()
-	{
-		bool buttonPressed = hftInput.GetButtonDown("fire1");
-		if (buttonPressed)
-		{
-			// TODO: Make something when user presses the button
-			Debug.Log(string.Format("User {0} pressed the button", hftGamepad.playerName));
-			foreach (Ship s in ships)
-			{
-				s.currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
-			}
-		}
-	}
+    void Update()
+    {
+        bool buttonPressed = hftInput.GetButtonDown("fire1") || Input.GetMouseButtonDown(0);
+        if (buttonPressed && GameManager.instance.cursor.currentFocusedPlanet != null)
+        {
+            previousTarget = currentTarget;
+            currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
+            foreach (Ship s in ships)
+            {
+                s.currentTarget = currentTarget;
+            }
+            attackLineRenderer.SetPosition(0, averagePosition);
+            attackLineRenderer.SetPosition(1, currentTarget.transform.position);
+            lastCommandTime = Time.time;
+        }
+
+        bool attackedRightNow = Time.time - lastCommandTime < 1f;
+        attackLineRenderer.enabled = attackedRightNow;
+    }
+
+    private void LateUpdate()
+    {
+        averagePosition = Vector3.zero;
+        foreach (var ship in ships)
+        {
+            if (ship != null)
+            {
+                averagePosition += ship.transform.position;
+            }
+        }
+        averagePosition = averagePosition / ships.Count;
+    }
+
 }
