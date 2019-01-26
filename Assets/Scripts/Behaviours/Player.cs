@@ -18,46 +18,47 @@ public class Player : MonoBehaviour
 	public Color color = Color.blue;
 	public List<Ship> ships;
 	public Planet initialPlanet;
-
-    // Data
-    public string displayName = "Player";
-    public int playerId = -1;
-    public Color color = Color.blue;
-    public List<Ship> ships;
-    public Planet initialPlanet;
+    
     public LineRenderer attackLineRenderer;
 
     Planet previousTarget;
     public Planet currentTarget;
 
+    HFTInput hftInput;
+    HFTGamepad hftGamepad;
+
     float lastCommandTime = -10;
 
     [HideInInspector]public Vector3 averagePosition;
 
-		playerId = GetInstanceID();
+    private void Awake()
+    {
+        hftInput = GetComponent<HFTInput>();
+        hftGamepad = GetComponent<HFTGamepad>();
+        playerId = GetInstanceID();
 		color = hftGamepad.color;
 		playerMaterial = new Material(Shader.Find("Specular"));
 		playerMaterial.color = color;
-
-        playerId = GetInstanceID();
-        color = hftGamepad.color;
 
         // Create a material copy
         playerShipMaterial = Material.Instantiate(playerShipMaterial);
         playerShipMaterial.SetColor("_Color", color);
         playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
         playerPlanetMaterial.SetColor("_Color", color);
+
         attackLineRenderer.startColor = color;
         attackLineRenderer.endColor = color;
+        GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
+        GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
 
-		// Spawn ships
-		SpawnShips();
+        // Spawn ships
+        SpawnShips();
 	}
 
 	private void Start()
 	{
 		GameManager.instance.players.Add(this);
-		GameManager.instance.PlayersInfo.AddPlayerInfo(this);
+		//GameManager.instance.PlayersInfo.AddPlayerInfo(this);
 	}
 
 	private void SpawnShips() 
@@ -76,8 +77,9 @@ public class Player : MonoBehaviour
             shipModel.SetOwner(this);
             shipModel.SetMaterial(playerShipMaterial);
         }
-		GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
-		GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintPlanetsCount();
+        
+        //GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
+		//GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintPlanetsCount();
     }
 
     void Update()
