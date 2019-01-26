@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerInfo : MonoBehaviour
 {
-	public int playerId;
 	[HideInInspector]
 	public Player player;
+	public int playerId { get { return player.playerId; } }
 
 	internal string displayName { get { return player.displayName; } }
 	internal int shipsCount { get { return player.ships.Count; } }
@@ -26,6 +26,8 @@ public class PlayerInfo : MonoBehaviour
 		rankPosition = transform.GetSiblingIndex();
 		PlayersInfo.instance.playerInfo.Add(this);
 		SetNameAndColor();
+		PrintShipCount();
+		PrintPlanetsCount();
 	}
 
 	public void SetNameAndColor()
@@ -37,6 +39,7 @@ public class PlayerInfo : MonoBehaviour
 	public void PrintShipCount()
 	{
 		shipsCountText.text = "Naves: " + shipsCount.ToString();
+		SetRankPosition();
 	}
 
 	public void PrintPlanetsCount()
@@ -47,8 +50,35 @@ public class PlayerInfo : MonoBehaviour
 
 	public void SetRankPosition()
 	{
-		PlayerInfo nearPlayer = PlayersInfo.instance.playerInfo.Find(x => x.planetsCount < planetsCount);
+		PlayerInfo nearPlayer = PlayersInfo.instance.playerInfo.Find(
+			x =>
+			x.shipsCount < shipsCount && 
+			x.shipsCount != 0 &&
+			shipsCount != 0 && 
+			x.transform.GetSiblingIndex() < transform.GetSiblingIndex()
+			);
 
+		if (nearPlayer != null)
+		{
+			SwapSiblingIndex(nearPlayer);
+		}
+		else
+		{
+			nearPlayer = PlayersInfo.instance.playerInfo.Find(
+				x => 
+				x.shipsCount > shipsCount &&
+				x.shipsCount != 0 && 
+				shipsCount != 0 &&
+				x.transform.GetSiblingIndex() > transform.GetSiblingIndex());
+			if (nearPlayer != null)
+			{
+				SwapSiblingIndex(nearPlayer);
+			}
+		}
+	}
+
+	void SwapSiblingIndex(PlayerInfo nearPlayer)
+	{
 		int newIndex = PlayersInfo.instance.playerInfo.FindIndex(x => x == nearPlayer);
 		int oldIndex = PlayersInfo.instance.playerInfo.FindIndex(x => x == this);
 

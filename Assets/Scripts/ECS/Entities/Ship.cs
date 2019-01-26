@@ -5,100 +5,101 @@ using MGJW9.JobySystem;
 
 public class Ship : MonoBehaviour
 {
-    public Planet currentTarget;
+	public Planet currentTarget;
 
-    public Bullet bulletPrefab;
-    public GameObject explosionPrefab;
-    public TrailRenderer trailRenderer;
-    public SpriteRenderer haloRenderer;
+	public Bullet bulletPrefab;
+	public GameObject explosionPrefab;
+	public TrailRenderer trailRenderer;
+	public SpriteRenderer haloRenderer;
 
-    [Range(-1f, 1f)]
-    public float shootAlignment = 0.5f;
+	[Range(-1f, 1f)]
+	public float shootAlignment = 0.5f;
 
-    public Player owner { get; set; }
-    float randomValue, randomValue2;
+	public Player owner { get; set; }
+	float randomValue, randomValue2;
 
-    public float shootOffset = 0.5f;
-    public float avoidRadius = 0.5f;
-    public float avoidThrust = 1f;
+	public float shootOffset = 0.5f;
+	public float avoidRadius = 0.5f;
+	public float avoidThrust = 1f;
 
-    public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue, randomValue2); } }
+	public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue, randomValue2); } }
 
-    private MeshRenderer meshRenderer;
+	private MeshRenderer meshRenderer;
 
-    Bullet currentBullet;
+	Bullet currentBullet;
 
-    [HideInInspector]public Vector3 direction;
+	[HideInInspector] public Vector3 direction;
 
-    private void Awake()
-    {
-        randomValue = Random.value;
-        randomValue2 = Random.value;
-        transform.position += Random.insideUnitSphere;
-        meshRenderer = GetComponent<MeshRenderer>();
-    }
+	private void Awake()
+	{
+		randomValue = Random.value;
+		randomValue2 = Random.value;
+		transform.position += Random.insideUnitSphere;
+		meshRenderer = GetComponent<MeshRenderer>();
+	}
 
-    public void SetMaterial(Material material) 
-    {
-        meshRenderer.material = material;
-    }
-    
-    public void GoToRandomPlanet()
-    {
-        if (GameManager.instance.planets != null)
-        {
-            var planets = GameManager.instance.planets;
-            currentTarget = planets[Random.Range(0, planets.Count)];
-        }
-    }
+	public void SetMaterial(Material material)
+	{
+		meshRenderer.material = material;
+	}
 
-    private void OnDestroy()
-    {
-        if (Application.isPlaying)
-        {
-            if (owner != null)
-            {
-                owner.ships.Remove(this);
-            }
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        }
-    }
+	public void GoToRandomPlanet()
+	{
+		if (GameManager.instance.planets != null)
+		{
+			var planets = GameManager.instance.planets;
+			currentTarget = planets[Random.Range(0, planets.Count)];
+		}
+	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        var targetShip = collision.GetComponent<Ship>();
+	private void OnDestroy()
+	{
+		if (Application.isPlaying)
+		{
+			if (owner != null)
+			{
+				owner.ships.Remove(this);
+				PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
+			}
+			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+		}
+	}
 
-        if (targetShip != null && targetShip.owner != this.owner)
-        {
-            var delta = ((Vector2)targetShip.transform.position - (Vector2)transform.position).normalized;
-            var alignment = Vector2.Dot(delta.normalized, direction);
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		var targetShip = collision.GetComponent<Ship>();
 
-            if (alignment > shootAlignment)
-            {
-                if (currentBullet == null)
-                {
-                    currentBullet = Instantiate(bulletPrefab, transform.position, transform.rotation, transform) as Bullet;
-                }
-                currentBullet.shootOffset = shootOffset;
-                currentBullet.target = collision.gameObject;
-                Invoke("NullifyTarget", 0.2f);
-            }
-        }
-    }
+		if (targetShip != null && targetShip.owner != this.owner)
+		{
+			var delta = ((Vector2)targetShip.transform.position - (Vector2)transform.position).normalized;
+			var alignment = Vector2.Dot(delta.normalized, direction);
 
-    public void SetOwner(Player player)
-    {
-        owner = player;
-        currentTarget = player.initialPlanet;
-        trailRenderer.startColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
-        trailRenderer.endColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
-        haloRenderer.color = new Color(player.color.r, player.color.g, player.color.b, haloRenderer.color.a);
-    }
+			if (alignment > shootAlignment)
+			{
+				if (currentBullet == null)
+				{
+					currentBullet = Instantiate(bulletPrefab, transform.position, transform.rotation, transform) as Bullet;
+				}
+				currentBullet.shootOffset = shootOffset;
+				currentBullet.target = collision.gameObject;
+				Invoke("NullifyTarget", 0.2f);
+			}
+		}
+	}
 
-    void NullifyTarget()
-    {
-        currentBullet.CancelTarget();
-        currentTarget = null;
-    }
+	public void SetOwner(Player player)
+	{
+		owner = player;
+		currentTarget = player.initialPlanet;
+		trailRenderer.startColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
+		trailRenderer.endColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
+		haloRenderer.color = new Color(player.color.r, player.color.g, player.color.b, haloRenderer.color.a);
+	}
+
+	void NullifyTarget()
+	{
+		currentBullet.CancelTarget();
+		currentTarget = null;
+	}
 
 }
