@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92bf6e13e3166cd4d82bf33dfc602ee3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingShips: 50
+  startingShips: 5
   shipPrefab: {fileID: 9195560870698094995, guid: 27e94e3d46a3c42a29d7a2bda7719635,
     type: 3}
   playerShipMaterial: {fileID: 2100000, guid: e25a73008dd1d0145844f3830d0584e5, type: 2}
@@ -92,6 +92,7 @@ MonoBehaviour:
   ships: []
   initialPlanet: {fileID: 0}
   attackLineRenderer: {fileID: 7583225786117720666}
+  currentTarget: {fileID: 0}
   averagePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &5176162588851565398
 GameObject:
