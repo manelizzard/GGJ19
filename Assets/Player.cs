@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     public int startingShips = 10;
     public GameObject shipPrefab;
 
+    public Material playerMaterial;
+
     // Instantiation
     private HFTInput hftInput;
     private HFTGamepad hftGamepad;
@@ -24,6 +26,8 @@ public class Player : MonoBehaviour
 
         playerId = hftGamepad.playerName.GetHashCode();
         color = hftGamepad.color;
+        playerMaterial = new Material(Shader.Find("Specular"));
+        playerMaterial.color = color;
 
         // Assign random planet to spawned player
         GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
@@ -39,9 +43,11 @@ public class Player : MonoBehaviour
         for(int i = 0; i < startingShips; i++) 
         {
             // Instantiate in first planet
-            GameObject ship = Instantiate(shipPrefab, this.transform);
-            ship.transform.position = initialPlanet.transform.position;
-            ship.GetComponent<Ship>().currentTarget = initialPlanet;
+            GameObject go = Instantiate(shipPrefab, this.transform);
+            go.transform.position = initialPlanet.transform.position;
+            Ship shipModel = go.GetComponent<Ship>();
+            shipModel.currentTarget = initialPlanet;
+            shipModel.SetMaterial(playerMaterial);
         }
     }
 
