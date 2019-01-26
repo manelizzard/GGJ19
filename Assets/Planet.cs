@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MGJW9;
+using MGJW9.JobySystem;
 
 public class Planet : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class Planet : MonoBehaviour
 
     private void Start()
     {
-        GameManager.instance.planets.Add(this);
+        GameController.instance.planets.Add(this);
     }
 
     public Vector3 GetOrbitPosition(float randomValue)
