@@ -30,6 +30,11 @@ public class ShipCS : ComponentSystem
                 currentShip.GoToRandomPlanet();
             }
 
+            if (currentShip.owner != null && currentShip.currentTarget == null)
+            {
+                currentShip.currentTarget = currentShip.owner.currentTarget;
+            }
+
             if (currentShip.currentTarget != null)
             {
                 if (currentShip.currentTarget.inhabitants.Contains(currentShip))

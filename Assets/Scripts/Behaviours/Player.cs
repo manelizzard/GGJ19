@@ -74,7 +74,6 @@ public class Player : MonoBehaviour
             Ship shipModel = go.GetComponent<Ship>();
             ships.Add(shipModel);
             shipModel.SetOwner(this);
-            shipModel.SetMaterial(playerShipMaterial);
         }
         
         //GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
