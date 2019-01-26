@@ -69,8 +69,9 @@ public class Player : MonoBehaviour
         bool buttonPressed = hftInput.GetButtonDown("fire1");
         if (buttonPressed)
         {
+            Planet planet = GameManager.instance.cursor.currentFocusedPlanet;
             foreach(Ship s in ships) {
-                s.currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
+                s.currentTarget = planet;
             }      
         }
     }
