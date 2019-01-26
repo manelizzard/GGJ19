@@ -36,9 +36,14 @@ public class Player : MonoBehaviour
     
         // Spawn ships
         SpawnShips();
-    }    
-    
-    private void SpawnShips() 
+    }
+
+	private void Start()
+	{
+		GameManager.instance.players.Add(this);
+	}
+
+	private void SpawnShips() 
     {
         Planet initialPlanet = GameManager.instance.playerPlanets[playerId][0];
         for(int i = 0; i < startingShips; i++) 
