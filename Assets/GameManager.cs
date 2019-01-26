@@ -6,8 +6,11 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
+    public PlanetCursor cursor;
     public List<Planet> planets;
+
+	[HideInInspector]
+	public List<Player> players;
 
     public Dictionary<int, List<Planet>> playerPlanets;
     private void Awake()

@@ -17,10 +17,11 @@ public class Player : MonoBehaviour
     public string displayName = "Player";
     public int playerId = -1;
     public Color color = Color.blue;
-
+    public List<Ship> ships;
 
     void Awake()
     {
+        ships = new List<Ship>();
         hftInput = GetComponent<HFTInput>();
         hftGamepad = GetComponent<HFTGamepad>();
 
@@ -35,9 +36,14 @@ public class Player : MonoBehaviour
     
         // Spawn ships
         SpawnShips();
-    }    
-    
-    private void SpawnShips() 
+    }
+
+	private void Start()
+	{
+		GameManager.instance.players.Add(this);
+	}
+
+	private void SpawnShips() 
     {
         Planet initialPlanet = GameManager.instance.playerPlanets[playerId][0];
         for(int i = 0; i < startingShips; i++) 
@@ -46,6 +52,7 @@ public class Player : MonoBehaviour
             GameObject go = Instantiate(shipPrefab, this.transform);
             go.transform.position = initialPlanet.transform.position;
             Ship shipModel = go.GetComponent<Ship>();
+            ships.Add(shipModel);
             shipModel.currentTarget = initialPlanet;
             shipModel.SetMaterial(playerMaterial);
         }
@@ -57,7 +64,10 @@ public class Player : MonoBehaviour
         if (buttonPressed)
         {
             // TODO: Make something when user presses the button
-            Debug.Log(string.Format("User {0} pressed the button", hftGamepad.playerName));        
+            Debug.Log(string.Format("User {0} pressed the button", hftGamepad.playerName));
+            foreach(Ship s in ships) {
+                s.currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
+            }      
         }
     }
 }
