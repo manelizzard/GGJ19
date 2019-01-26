@@ -86,7 +86,7 @@ namespace HappyFunTimes
 
             IEnumerator InformCoroutine()
             {
-                www_ = new UnityWebRequest(url_, UnityWebRequest.kHttpVerbPOST);
+                www_ = new UnityWebRequest(System.Web.HttpUtility.UrlEncode(url_), UnityWebRequest.kHttpVerbPOST);
                 www_.uploadHandler = new UploadHandlerRaw(addressesBytes_);
                 www_.uploadHandler.contentType = "application/json";
                 www_.downloadHandler = new DownloadHandlerBuffer();

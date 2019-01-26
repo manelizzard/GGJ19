@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MGJW9;
 using MGJW9.JobySystem;
+using System.Linq;
 
 public class Planet : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Planet : MonoBehaviour
     public float orbitSpeed = 1f;
 
     const float pi2 = 2 * Mathf.PI;
+    public MeshRenderer playerOwnerMeshRenderer;
 
     private void Awake()
     {
@@ -24,6 +26,7 @@ public class Planet : MonoBehaviour
     private void Start()
     {
         GameManager.instance.planets.Add(this);
+        playerOwnerMeshRenderer.gameObject.SetActive(false);
     }
 
     public Vector3 GetOrbitPosition(float randomValue)
@@ -33,17 +36,13 @@ public class Planet : MonoBehaviour
         return transform.position + orbitRadius * delta;
     }
 
-    public void ColonizedByPlayer(Player player)
-    {
-        // TODO: Make shader to identify planet as belonging to the player
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var ship = collision.gameObject.GetComponent<Ship>();
         if (ship != null && ship.currentTarget == this)
         {
             inhabitants.Add(ship);
+            ComputePlanetOwner();
         }
     }
      
@@ -53,6 +52,25 @@ public class Planet : MonoBehaviour
         if (ship != null)
         {
             inhabitants.Remove(ship);
+            ComputePlanetOwner();
+        }
+    }
+
+    private void ComputePlanetOwner() 
+    {
+        // Do not update owner if less than 5 inhabitants
+        if (inhabitants == null || inhabitants.Count() >= 5) {
+            return;
+        }
+
+        int ownerPlayerId = inhabitants.GroupBy(ship => ship.owner != null ? ship.owner.playerId : 0)
+            .OrderBy(group => group.Count())
+            .Select(group => group.Key).FirstOrDefault();
+
+        Player player = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
+        if (player != null) {
+            playerOwnerMeshRenderer.gameObject.SetActive(true);
+            playerOwnerMeshRenderer.material = player.playerPlanetMaterial;
         }
     }
 
