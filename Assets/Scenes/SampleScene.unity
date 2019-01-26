@@ -554,7 +554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shipPrefab: {fileID: 9195560870698094995, guid: 27e94e3d46a3c42a29d7a2bda7719635,
     type: 3}
-  targetAmount: 10
+  targetAmount: 0
 --- !u!4 &1332909299
 Transform:
   m_ObjectHideFlags: 0

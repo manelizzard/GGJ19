@@ -22,9 +22,11 @@ public class ShipCS : ComponentSystem
             var currentShip = entity.ship;
             var currentMobile = entity.mobile;
 
+            currentShip.direction = ((Vector2)entity.mobile.speed).normalized;
+
             if (currentShip.currentTarget == null)
             {
-                currentShip.GetTarget();
+                currentShip.GetTargetPlanet();
             }
 
             if (currentShip.currentTarget != null)
