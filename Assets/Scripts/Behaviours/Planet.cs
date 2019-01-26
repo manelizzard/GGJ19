@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MGJW9;
@@ -42,20 +41,20 @@ public class Planet : MonoBehaviour
         {
             alpha = (float)i / 100f;
             beta = (float)(i+1) / 100f;
-            Debug.DrawLine(GetOrbitPosition(alpha), GetOrbitPosition(beta), Color.yellow);
+            Debug.DrawLine(GetOrbitPosition(alpha, 0), GetOrbitPosition(beta, 0), Color.yellow);
         }
 
-        Debug.DrawLine(transform.position, GetOrbitPosition(0), Color.yellow);
-        Debug.DrawLine(transform.position, GetOrbitPosition(0.25f), Color.yellow);
-        Debug.DrawLine(transform.position, GetOrbitPosition(0.5f), Color.yellow);
-        Debug.DrawLine(transform.position, GetOrbitPosition(0.75f), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0, 0), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.25f, 0), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.5f, 0), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.75f, 0), Color.yellow);
     }
 
-    public Vector3 GetOrbitPosition(float randomValue)
+    public Vector3 GetOrbitPosition(float randomValue, float randomValue2)
     {
         var phase = Time.time * orbitSpeed + randomValue * pi2;
         var delta = new Vector3(Mathf.Cos(phase), Mathf.Sin(phase), Mathf.Sin(phase)).normalized;
-        return transform.position + orbitRadius * delta;
+        return transform.position + orbitRadius * delta * (1f + randomValue2);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -81,7 +80,7 @@ public class Planet : MonoBehaviour
     private void ComputePlanetOwner() 
     {
         // Do not update owner if less than 5 inhabitants
-        if (inhabitants == null || inhabitants.Count() >= 5) {
+        if (inhabitants == null || inhabitants.Count() <= 5) {
             return;
         }
 
@@ -105,7 +104,7 @@ public class Planet : MonoBehaviour
             accum = 0f;
             var newShip = ObjectPool.Spawn(GameManager.instance.shipPrefab, playerOwner.transform, transform.position);
             newShip.GetComponent<Ship>().owner = playerOwner;
-            newShip.GetComponent<Ship>().currentTarget = this;
+            newShip.GetComponent<Ship>().currentTarget = playerOwner.currentTarget;
             newShip.GetComponent<Ship>().SetMaterial(playerOwner.playerShipMaterial);
             playerOwner.ships.Add(newShip.GetComponent<Ship>());
             //TODO: We would need to add this new ship to GameController in the job system
