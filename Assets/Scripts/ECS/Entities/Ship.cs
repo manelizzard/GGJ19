@@ -15,8 +15,8 @@ public class Ship : MonoBehaviour
     [Range(-1f, 1f)]
     public float shootAlignment = 0.5f;
 
+    public Player owner { get; set; }
     float randomValue, randomValue2;
-    public Player owner { get; private set; }
 
     public float shootOffset = 0.5f;
     public float avoidRadius = 0.5f;

@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public LineRenderer attackLineRenderer;
 
     Planet previousTarget;
-    Planet currentTarget;
+    public Planet currentTarget;
 
     float lastCommandTime = -10;
 
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        bool buttonPressed = hftInput.GetButtonDown("fire1");
+        bool buttonPressed = hftInput.GetButtonDown("fire1") || Input.GetMouseButtonDown(0);
         if (buttonPressed && GameManager.instance.cursor.currentFocusedPlanet != null)
         {
             previousTarget = currentTarget;

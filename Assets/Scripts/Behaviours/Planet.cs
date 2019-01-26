@@ -17,6 +17,9 @@ public class Planet : MonoBehaviour
     const float pi2 = 2 * Mathf.PI;
     public MeshRenderer playerOwnerMeshRenderer;
 
+    int ownerPlayerId;
+    Player playerOwner;
+
     private void Awake()
     {
         inhabitants = new List<Ship>();
@@ -26,6 +29,7 @@ public class Planet : MonoBehaviour
     {
         GameManager.instance.planets.Add(this);
         playerOwnerMeshRenderer.gameObject.SetActive(false);
+        accum = 0f;
     }
 
     private void OnDrawGizmosSelected()
@@ -80,14 +84,30 @@ public class Planet : MonoBehaviour
             return;
         }
 
-        int ownerPlayerId = inhabitants.GroupBy(ship => ship.owner != null ? ship.owner.playerId : 0)
+        ownerPlayerId = inhabitants.GroupBy(ship => ship.owner != null ? ship.owner.playerId : 0)
             .OrderBy(group => group.Count())
             .Select(group => group.Key).FirstOrDefault();
 
-        Player player = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
-        if (player != null) {
+        playerOwner = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
+        if (playerOwner != null) {
             playerOwnerMeshRenderer.gameObject.SetActive(true);
-            playerOwnerMeshRenderer.material = player.playerPlanetMaterial;
+            playerOwnerMeshRenderer.material = playerOwner.playerPlanetMaterial;
+        }
+    }
+
+    private float accum;
+    private void Update()
+    {
+        accum += Time.deltaTime;
+        if (accum >= 5f && playerOwner != null)
+        {
+            accum = 0f;
+            var newShip = ObjectPool.Spawn(GameManager.instance.shipPrefab, playerOwner.transform, transform.position);
+            newShip.GetComponent<Ship>().owner = playerOwner;
+            newShip.GetComponent<Ship>().currentTarget = playerOwner.currentTarget;
+            newShip.GetComponent<Ship>().SetMaterial(playerOwner.playerShipMaterial);
+            playerOwner.ships.Add(newShip.GetComponent<Ship>());
+            //TODO: We would need to add this new ship to GameController in the job system
         }
     }
 
