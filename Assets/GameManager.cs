@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
+    public PlanetCursor cursor;
     public List<Planet> planets;
 
 	[HideInInspector]
