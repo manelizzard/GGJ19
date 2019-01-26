@@ -19,7 +19,7 @@ public class StressSpawner : MonoBehaviour
         {
             for (int i = 0; i < targetAmount; i++)
             {
-                Instantiate(shipPrefab, transform.position, Quaternion.identity);
+                Instantiate(shipPrefab, transform.position + Random.insideUnitSphere*5f, Quaternion.identity);
             }
             targetAmount = 0;
         }

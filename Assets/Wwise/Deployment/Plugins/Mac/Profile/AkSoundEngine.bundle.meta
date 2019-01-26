@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9a1620eae9c47774f86be018059293d5
+guid: 1c09573c94bb0a7479d32e8e8e0a3feb
 folderAsset: yes
 PluginImporter:
   externalObjects: {}
@@ -19,7 +19,7 @@ PluginImporter:
   - first:
       Editor: Editor
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
