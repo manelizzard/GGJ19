@@ -92,9 +92,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28003f6284a498d418c508d6bf4cde1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inhabitants: []
   radius: 1
-  orbitRadius: 2
-  orbitSpeed: 1
+  orbitRadius: 1.5
+  orbitSpeed: 2
 --- !u!114 &3336668902639898468
 MonoBehaviour:
   m_ObjectHideFlags: 0

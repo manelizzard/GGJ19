@@ -8,11 +8,6 @@ public class StressSpawner : MonoBehaviour
 
     public int targetAmount = 10;
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         if (targetAmount != 0)
