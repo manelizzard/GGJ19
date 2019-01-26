@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public int playerId = -1;
     public Color color = Color.blue;
     public List<Ship> ships;
+    public Planet initialPlanet;
 
     void Awake()
     {
@@ -45,7 +46,7 @@ public class Player : MonoBehaviour
 
 	private void SpawnShips() 
     {
-        Planet initialPlanet = GameManager.instance.playerPlanets[playerId][0];
+        initialPlanet = GameManager.instance.playerPlanets[playerId][0];
         for(int i = 0; i < startingShips; i++) 
         {
             // Instantiate in first planet
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
             go.transform.position = initialPlanet.transform.position;
             Ship shipModel = go.GetComponent<Ship>();
             ships.Add(shipModel);
-            shipModel.currentTarget = initialPlanet;
+            shipModel.SetOwner(this);
             shipModel.SetMaterial(playerMaterial);
         }
     }

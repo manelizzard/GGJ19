@@ -24,9 +24,9 @@ public class ShipCS : ComponentSystem
 
             currentShip.direction = ((Vector2)entity.mobile.speed).normalized;
 
-            if (currentShip.currentTarget == null)
+            if (currentShip.owner == null && currentShip.currentTarget == null)
             {
-                currentShip.GetTargetPlanet();
+                currentShip.GoToRandomPlanet();
             }
 
             if (currentShip.currentTarget != null)

@@ -5,16 +5,17 @@ using MGJW9.JobySystem;
 
 public class Ship : MonoBehaviour
 {
-    public Player owner;
     public Planet currentTarget;
 
     public Bullet bulletPrefab;
     public GameObject explosionPrefab;
+    public TrailRenderer trailRenderer;
 
     [Range(-1f, 1f)]
     public float shootAlignment = 0.5f;
 
     float randomValue;
+    public Player owner { get; private set; }
 
     public float shootOffset = 0.5f;
 
@@ -38,7 +39,7 @@ public class Ship : MonoBehaviour
         meshRenderer.material = material;
     }
     
-    public void GetTargetPlanet()
+    public void GoToRandomPlanet()
     {
         if (GameManager.instance.planets != null)
         {
@@ -59,7 +60,7 @@ public class Ship : MonoBehaviour
     {
         var targetShip = collision.GetComponent<Ship>();
 
-        if (targetShip != null)
+        if (targetShip != null && targetShip.owner != this.owner)
         {
             var delta = ((Vector2)targetShip.transform.position - (Vector2)transform.position).normalized;
             var alignment = Vector2.Dot(delta.normalized, direction);
@@ -75,6 +76,14 @@ public class Ship : MonoBehaviour
                 Invoke("NullifyTarget", 0.2f);
             }
         }
+    }
+
+    public void SetOwner(Player player)
+    {
+        owner = player;
+        currentTarget = player.initialPlanet;
+        trailRenderer.startColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
+        trailRenderer.endColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
     }
 
     void NullifyTarget()

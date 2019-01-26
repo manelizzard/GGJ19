@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   lineRenderer: {fileID: 2261730920695846566}
+  shootOffset: 0
 --- !u!120 &2261730920695846566
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -88,7 +89,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.05
+    widthMultiplier: 0.025
     widthCurve:
       serializedVersion: 2
       m_Curve:

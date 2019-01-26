@@ -8,11 +8,18 @@ using MGJW9.JobySystem;
 public class Planet : MonoBehaviour
 {
 
+    public List<Ship> inhabitants;
+
     public float radius = 1f;
     public float orbitRadius = 2f;
     public float orbitSpeed = 1f;
 
     const float pi2 = 2 * Mathf.PI;
+
+    private void Awake()
+    {
+        inhabitants = new List<Ship>();
+    }
 
     private void Start()
     {
@@ -26,8 +33,27 @@ public class Planet : MonoBehaviour
         return transform.position + orbitRadius * delta;
     }
 
-    public void ColonizedByPlayer(Player player) {
+    public void ColonizedByPlayer(Player player)
+    {
         // TODO: Make shader to identify planet as belonging to the player
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var ship = collision.gameObject.GetComponent<Ship>();
+        if (ship != null && ship.currentTarget == this)
+        {
+            inhabitants.Add(ship);
+        }
+    }
+     
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        var ship = collision.gameObject.GetComponent<Ship>();
+        if (ship != null)
+        {
+            inhabitants.Remove(ship);
+        }
     }
 
 }
