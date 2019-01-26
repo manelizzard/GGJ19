@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &552811880005091773
 Transform:
   m_ObjectHideFlags: 0
@@ -191,8 +191,8 @@ MonoBehaviour:
   position: {x: -5.5417814, y: -2.4823864, z: -0.18284395}
   speed: {x: -0.14839222, y: 0.51140094, z: 0.4767049}
   accel: {x: -0.3020239, y: 0.11075902, z: 0.07043537}
-  thrust: 1
-  baseMaxSpeed: 1.5
+  thrust: 2
+  baseMaxSpeed: 0.25
   deltaMaxSpeed: 0.1
 --- !u!114 &9195560870698094993
 MonoBehaviour:

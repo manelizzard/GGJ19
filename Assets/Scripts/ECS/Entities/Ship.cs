@@ -22,7 +22,7 @@ public class Ship : MonoBehaviour
     public float avoidRadius = 0.5f;
     public float avoidThrust = 1f;
 
-    public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue, randomValue2); } }
+    public Vector3 orbitPosition { get { if (currentTarget != null) { return currentTarget.GetOrbitPosition(randomValue, randomValue2); } else { return transform.position; } } }
 
     private MeshRenderer meshRenderer;
 
@@ -36,6 +36,11 @@ public class Ship : MonoBehaviour
         randomValue2 = Random.value;
         transform.position += Random.insideUnitSphere;
         meshRenderer = GetComponent<MeshRenderer>();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Debug.DrawLine(transform.position, orbitPosition, Color.cyan);
     }
 
     public void SetMaterial(Material material) 

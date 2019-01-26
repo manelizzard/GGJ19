@@ -95,9 +95,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inhabitants: []
   radius: 1
-  orbitRadius: 1.5
-  orbitSpeed: 2
+  orbitRadius: 0.1
+  orbitSpeed: 3
   playerOwnerMeshRenderer: {fileID: 7246202135912802714}
+  timeBetweenSpawns: 3
 --- !u!114 &3336668902639898468
 MonoBehaviour:
   m_ObjectHideFlags: 0

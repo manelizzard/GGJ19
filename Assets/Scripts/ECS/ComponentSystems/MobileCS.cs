@@ -6,6 +6,8 @@ using Unity.Entities;
 public class MobileCS : ComponentSystem
 {
 
+    const float timeScale = 3;
+
     struct Components
     {
         public Mobile mobile;
@@ -14,7 +16,7 @@ public class MobileCS : ComponentSystem
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.deltaTime;
+        float deltaTime = Time.deltaTime * timeScale;
 
         foreach (var entity in GetEntities<Components>())
         {

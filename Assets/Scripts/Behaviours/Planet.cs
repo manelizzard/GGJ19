@@ -10,7 +10,6 @@ public class Planet : MonoBehaviour
 
     public List<Ship> inhabitants;
 
-    public float radius = 1f;
     public float orbitRadius = 2f;
     public float orbitSpeed = 1f;
 
@@ -21,6 +20,9 @@ public class Planet : MonoBehaviour
     Player playerOwner;
 
     const int minShipsToConquer = 0;
+
+    private float spawnTimer;
+    public float timeBetweenSpawns = 3f;
 
     private void Awake()
     {
@@ -82,7 +84,8 @@ public class Planet : MonoBehaviour
     private void ComputePlanetOwner() 
     {
         // Do not update owner if less than 5 inhabitants
-        if (inhabitants == null || inhabitants.Count() <= minShipsToConquer) {
+        if (inhabitants == null || inhabitants.Count() <= minShipsToConquer)
+        {
             return;
         }
 
@@ -91,14 +94,12 @@ public class Planet : MonoBehaviour
             .Select(group => group.Key).FirstOrDefault();
 
         playerOwner = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
-        if (playerOwner != null) {
+        if (playerOwner != null)
+        {
             playerOwnerMeshRenderer.gameObject.SetActive(true);
             playerOwnerMeshRenderer.material = playerOwner.playerPlanetMaterial;
         }
     }
-
-    private float spawnTimer;
-    public float timeBetweenSpawns = 3f;
 
     private void Update()
     {
