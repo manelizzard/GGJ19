@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         bool buttonPressed = hftInput.GetButtonDown("fire1");
-        if (buttonPressed)
+        if (buttonPressed && GameManager.instance.cursor.currentFocusedPlanet != null)
         {
             previousTarget = currentTarget;
             currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
