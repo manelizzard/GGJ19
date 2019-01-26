@@ -20,6 +20,8 @@ public class Planet : MonoBehaviour
     int ownerPlayerId;
     Player playerOwner;
 
+    const int minShipsToConquer = 0;
+
     private void Awake()
     {
         inhabitants = new List<Ship>();
@@ -29,7 +31,7 @@ public class Planet : MonoBehaviour
     {
         GameManager.instance.planets.Add(this);
         playerOwnerMeshRenderer.gameObject.SetActive(false);
-        accum = 0f;
+        spawnTimer = 0f;
     }
 
     private void OnDrawGizmosSelected()
@@ -80,7 +82,7 @@ public class Planet : MonoBehaviour
     private void ComputePlanetOwner() 
     {
         // Do not update owner if less than 5 inhabitants
-        if (inhabitants == null || inhabitants.Count() <= 5) {
+        if (inhabitants == null || inhabitants.Count() <= minShipsToConquer) {
             return;
         }
 
@@ -95,18 +97,18 @@ public class Planet : MonoBehaviour
         }
     }
 
-    private float accum;
+    private float spawnTimer;
+    public float timeBetweenSpawns = 3f;
+
     private void Update()
     {
-        accum += Time.deltaTime;
-        if (accum >= 5f && playerOwner != null)
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= timeBetweenSpawns && playerOwner != null)
         {
-            accum = 0f;
+            spawnTimer = 0f;
             var newShip = ObjectPool.Spawn(GameManager.instance.shipPrefab, playerOwner.transform, transform.position);
-            newShip.GetComponent<Ship>().owner = playerOwner;
-            newShip.GetComponent<Ship>().currentTarget = playerOwner.currentTarget;
-            newShip.GetComponent<Ship>().SetMaterial(playerOwner.playerShipMaterial);
-            playerOwner.ships.Add(newShip.GetComponent<Ship>());
+            var newShipComponent = newShip.GetComponent<Ship>();
+            newShipComponent.SetOwner(playerOwner);
             //TODO: We would need to add this new ship to GameController in the job system
         }
     }

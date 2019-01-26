@@ -89,10 +89,12 @@ public class Ship : MonoBehaviour
     public void SetOwner(Player player)
     {
         owner = player;
-        currentTarget = player.initialPlanet;
+        owner.ships.Add(this);
+        currentTarget = player.currentTarget;
         trailRenderer.startColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
         trailRenderer.endColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
         haloRenderer.color = new Color(player.color.r, player.color.g, player.color.b, haloRenderer.color.a);
+        SetMaterial(player.playerShipMaterial);
     }
 
     void NullifyTarget()

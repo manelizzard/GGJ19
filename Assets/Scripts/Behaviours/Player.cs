@@ -42,10 +42,9 @@ public class Player : MonoBehaviour
 
         // Create a material copy
         playerShipMaterial = Material.Instantiate(playerShipMaterial);
-        playerShipMaterial.SetColor("_Color", color);
         playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
+        playerShipMaterial.SetColor("_Color", color);
         playerPlanetMaterial.SetColor("_Color", color);
-
         attackLineRenderer.startColor = color;
         attackLineRenderer.endColor = color;
         GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
