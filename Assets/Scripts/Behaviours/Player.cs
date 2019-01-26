@@ -29,7 +29,8 @@ public class Player : MonoBehaviour
 
     float lastCommandTime = -10;
 
-    [HideInInspector]public Vector3 averagePosition;
+    [HideInInspector] public int shipCount = 0;
+    [HideInInspector] public Vector3 averagePosition;
 
     private void Awake()
     {
@@ -103,14 +104,23 @@ public class Player : MonoBehaviour
     private void LateUpdate()
     {
         averagePosition = Vector3.zero;
+        shipCount = 0;
         foreach (var ship in ships)
         {
             if (ship != null)
             {
+                shipCount++;
                 averagePosition += ship.transform.position;
             }
         }
-        averagePosition = averagePosition / ships.Count;
+        if (shipCount!=0)
+        {
+            averagePosition = averagePosition / shipCount;
+        }
+        else
+        {
+            averagePosition = Vector3.zero;
+        }
     }
 
 }
