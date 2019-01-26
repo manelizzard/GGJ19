@@ -56,6 +56,10 @@ public class Ship : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            if (owner != null)
+            {
+                owner.ships.Remove(this);
+            }
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
     }

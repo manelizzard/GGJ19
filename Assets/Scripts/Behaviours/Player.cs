@@ -20,6 +20,14 @@ public class Player : MonoBehaviour
     public Color color = Color.blue;
     public List<Ship> ships;
     public Planet initialPlanet;
+    public LineRenderer attackLineRenderer;
+
+    Planet previousTarget;
+    Planet currentTarget;
+
+    float lastCommandTime = -10;
+
+    [HideInInspector]public Vector3 averagePosition;
 
     void Awake()
     {
@@ -35,6 +43,8 @@ public class Player : MonoBehaviour
         playerShipMaterial.SetColor("_Color", color);
         playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
         playerPlanetMaterial.SetColor("_Color", color);
+        attackLineRenderer.startColor = color;
+        attackLineRenderer.endColor = color;
 
         // Assign random planet to spawned player
         GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
@@ -52,7 +62,10 @@ public class Player : MonoBehaviour
 	private void SpawnShips() 
     {
         initialPlanet = GameManager.instance.playerPlanets[playerId][0];
-        for(int i = 0; i < startingShips; i++) 
+        previousTarget = initialPlanet;
+        currentTarget = initialPlanet;
+
+        for (int i = 0; i < startingShips; i++) 
         {
             // Instantiate in first planet
             GameObject go = Instantiate(shipPrefab, this.transform);
@@ -69,9 +82,32 @@ public class Player : MonoBehaviour
         bool buttonPressed = hftInput.GetButtonDown("fire1");
         if (buttonPressed)
         {
-            foreach(Ship s in ships) {
-                s.currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
-            }      
+            previousTarget = currentTarget;
+            currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
+            foreach (Ship s in ships)
+            {
+                s.currentTarget = currentTarget;
+            }
+            attackLineRenderer.SetPosition(0, averagePosition);
+            attackLineRenderer.SetPosition(1, currentTarget.transform.position);
+            lastCommandTime = Time.time;
         }
+
+        bool attackedRightNow = Time.time - lastCommandTime < 1f;
+        attackLineRenderer.enabled = attackedRightNow;
     }
+
+    private void LateUpdate()
+    {
+        averagePosition = Vector3.zero;
+        foreach (var ship in ships)
+        {
+            if (ship != null)
+            {
+                averagePosition += ship.transform.position;
+            }
+        }
+        averagePosition = averagePosition / ships.Count;
+    }
+
 }
