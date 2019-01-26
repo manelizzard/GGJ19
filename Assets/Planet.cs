@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MGJW9;
+using MGJW9.JobySystem;
 
 public class Planet : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class Planet : MonoBehaviour
 
     private void Start()
     {
-        GameManager.instance.planets.Add(this);
+        GameController.instance.planets.Add(this);
     }
 
     public Vector3 GetOrbitPosition(float randomValue)
@@ -22,6 +24,10 @@ public class Planet : MonoBehaviour
         var phase = Time.time * orbitSpeed + randomValue * pi2;
         var delta = new Vector3(Mathf.Cos(phase), Mathf.Sin(phase));
         return transform.position + orbitRadius * delta;
+    }
+
+    public void ColonizedByPlayer(Player player) {
+        // TODO: Make shader to identify planet as belonging to the player
     }
 
 }

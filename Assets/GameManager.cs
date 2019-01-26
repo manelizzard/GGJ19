@@ -9,8 +9,10 @@ public class GameManager : MonoBehaviour
 
     public List<Planet> planets;
 
+    public Dictionary<int, List<Planet>> playerPlanets;
     private void Awake()
     {
+        playerPlanets = new Dictionary<int, List<Planet>>();
         instance = this;
     }
 
