@@ -25,6 +25,7 @@ public class MobileCS : ComponentSystem
 
             currentMobile.position += currentMobile.speed * deltaTime;
             entity.transform.position = currentMobile.position;
+            entity.transform.LookAt(entity.transform.position + currentMobile.speed);
 
             currentMobile.accel = Vector3.zero;
         }

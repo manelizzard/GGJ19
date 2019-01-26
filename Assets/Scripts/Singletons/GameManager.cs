@@ -5,7 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager instance;
+    public static GameManager instance { get { if (instance_ == null) { instance_ = FindObjectOfType<GameManager>(); }; return instance_; } }
+    static GameManager instance_;
+
     public PlanetCursor cursor;
     public List<Planet> planets;
 
@@ -16,7 +18,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         playerPlanets = new Dictionary<int, List<Planet>>();
-        instance = this;
     }
 
 }

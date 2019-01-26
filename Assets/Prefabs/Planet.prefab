@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3336668902639898469}
   - component: {fileID: 3336668902639898464}
   - component: {fileID: 3336668902639898468}
+  - component: {fileID: 199360320265715936}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -27,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3336668902639898491}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.98, y: 3.22, z: -0.05078125}
-  m_LocalScale: {x: 1, y: 1, z: 0.1517198}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -91,9 +92,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28003f6284a498d418c508d6bf4cde1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inhabitants: []
   radius: 1
-  orbitRadius: 2
-  orbitSpeed: 1
+  orbitRadius: 1.5
+  orbitSpeed: 2
 --- !u!114 &3336668902639898468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,3 +108,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf10cdea1344482e91a4f2b58506b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &199360320265715936
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3336668902639898491}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2
