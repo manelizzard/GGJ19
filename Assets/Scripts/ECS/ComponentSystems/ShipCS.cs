@@ -3,55 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 
-public class ShipCS : ComponentSystem
-{
+//public class ShipCS : ComponentSystem
+//{
 
-    struct Components
-    {
-        public Ship ship;
-        public Mobile mobile;
-        public Transform transform;
-    }
+//    struct Components
+//    {
+//        public Ship ship;
+//        public Rigidbody2D rb2d;
+//        public Transform transform;
+//    }
 
-    protected override void OnUpdate()
-    {
-        float deltaTime = Time.deltaTime;
-        var shipsMask = LayerMask.GetMask("Ships");
+//    protected override void OnUpdate()
+//    {
+//        float deltaTime = Time.deltaTime;
+//        var shipsMask = LayerMask.GetMask("Ships");
 
-        foreach (var entity in GetEntities<Components>())
-        {
-            var currentShip = entity.ship;
-            var currentMobile = entity.mobile;
+//        foreach (var entity in GetEntities<Components>())
+//        {
+//            var currentShip = entity.ship;
+//            var currentRb2d = entity.rb2d;
 
-            currentShip.direction = ((Vector2)entity.mobile.speed).normalized;
 
-            if (currentShip.owner == null && currentShip.currentTarget == null)
-            {
-                currentShip.GoToRandomPlanet();
-            }
+//        }
+//    }
 
-            if (currentShip.owner != null && currentShip.currentTarget == null)
-            {
-                currentShip.currentTarget = currentShip.owner.currentTarget;
-            }
-
-            if (currentShip.currentTarget != null)
-            {
-                if (currentShip.currentTarget.inhabitants.Contains(currentShip))
-                {
-                    Vector3 delta = currentShip.orbitPosition - entity.transform.position;
-                    delta = delta.sqrMagnitude * delta.normalized;
-                    currentMobile.accel += delta * currentMobile.thrust;
-                }
-                else
-                {
-                    Vector3 delta = currentShip.currentTarget.transform.position - entity.transform.position;
-                    delta = delta.sqrMagnitude * delta.normalized;
-                    currentMobile.accel += delta * currentMobile.thrust;
-                }
-            }
-            
-        }
-    }
-
-}
+//}

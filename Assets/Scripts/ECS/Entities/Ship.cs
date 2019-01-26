@@ -20,22 +20,67 @@ public class Ship : MonoBehaviour
 
     public float shootOffset = 0.5f;
     public float avoidRadius = 0.5f;
-    public float avoidThrust = 1f;
+    public float thrust = 1f;
+
+    public float baseMaxSpeed = 1f;
+    public float deltaMaxSpeed = 0.1f;
+    public float maxSpeed { get { return baseMaxSpeed + (Random.value - 0.5f) * deltaMaxSpeed * 2f; } }
 
     public Vector3 orbitPosition { get { if (currentTarget != null) { return currentTarget.GetOrbitPosition(randomValue, randomValue2); } else { return transform.position; } } }
 
     private MeshRenderer meshRenderer;
 
     Bullet currentBullet;
+    Rigidbody rb;
 
-    [HideInInspector]public Vector3 direction;
+    [System.NonSerialized]public bool arrivedAtTarget = true;
+
+    public Vector3 direction { get { return rb.velocity.normalized; } }
+
+    Vector3 randomAxis;
 
     private void Awake()
     {
         randomValue = Random.value;
         randomValue2 = Random.value;
+        randomAxis = Random.insideUnitSphere + new Vector3(-1,1,-1);
         transform.position += Random.insideUnitSphere;
         meshRenderer = GetComponent<MeshRenderer>();
+        rb = GetComponent<Rigidbody>();
+        rb.velocity = Random.insideUnitSphere.normalized*maxSpeed;
+    }
+
+    private void Update()
+    {
+        if (owner == null && currentTarget == null)
+        {
+            GoToRandomPlanet();
+        }
+
+        if (owner != null && currentTarget == null)
+        {
+            currentTarget = owner.currentTarget;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (currentTarget != null)
+        {
+            Vector3 delta = (currentTarget.transform.position - transform.position).normalized;
+            if (arrivedAtTarget)
+            {
+                rb.AddForce(delta * thrust * (0.7f + randomValue2));
+                rb.AddForce(Vector3.Cross(randomAxis, delta) * thrust * 0.7f);
+            }
+            else
+            {
+                rb.AddForce(delta * thrust);
+                transform.LookAt(transform.position + rb.velocity);
+            }
+        }
+
+        rb.velocity = rb.velocity.normalized * Mathf.Min(rb.velocity.magnitude, maxSpeed);
     }
 
     private void OnDrawGizmos()
@@ -61,6 +106,15 @@ public class Ship : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            if (currentTarget != null && arrivedAtTarget)
+            {
+                if (currentTarget.inhabitants.Contains(this))
+                {
+                    currentTarget.inhabitants.Remove(this);
+                    currentTarget.ComputePlanetOwner();
+                }
+            }
+
             if (owner != null)
             {
                 owner.ships.Remove(this);
@@ -69,14 +123,14 @@ public class Ship : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         var targetShip = collision.GetComponent<Ship>();
 
         if (targetShip != null && targetShip.owner != this.owner)
         {
-            var delta = ((Vector2)targetShip.transform.position - (Vector2)transform.position).normalized;
-            var alignment = Vector2.Dot(delta.normalized, direction);
+            var delta = (targetShip.transform.position - transform.position).normalized;
+            var alignment = Vector3.Dot(delta.normalized, direction);
 
             if (alignment > shootAlignment)
             {
