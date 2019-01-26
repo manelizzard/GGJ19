@@ -8,11 +8,15 @@ public class Ship : MonoBehaviour
     public Player owner;
     public Planet currentTarget;
 
+    public Bullet bulletPrefab;
+
     float randomValue;
 
     public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue); } }
 
     private MeshRenderer meshRenderer;
+
+    Bullet currentBullet;
 
     private void Awake()
     {
@@ -28,8 +32,20 @@ public class Ship : MonoBehaviour
     
     public void GetTarget()
     {
-        var planets = GameController.instance.planets;
-        currentTarget = planets[Random.Range(0, planets.Count)];
+        if (GameManager.instance.planets != null)
+        {
+            var planets = GameManager.instance.planets;
+            currentTarget = planets[Random.Range(0, planets.Count)];
+        }
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (currentBullet == null)
+    //    {
+    //        currentBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as Bullet;
+    //        currentBullet.target = collision.gameObject;
+    //    }
+    //}
 
 }

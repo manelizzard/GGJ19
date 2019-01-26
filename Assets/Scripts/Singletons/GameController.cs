@@ -8,7 +8,8 @@ namespace MGJW9.JobySystem
 {
     public class GameController : MonoBehaviour
     {
-        public static GameController instance;
+        public static GameController instance { get { if (instance_ == null) { instance_ = FindObjectOfType<GameController>(); }; return instance_; } }
+        static GameController instance_;
 
         [HideInInspector]
         public List<Planet> planets;
@@ -18,11 +19,6 @@ namespace MGJW9.JobySystem
         TransformAccessArray transforms;
         MovementJob moveJob;
         JobHandle moveHandle;
-
-        public void Awake()
-        {
-            instance = this;
-        }
 
         private void Start()
         {

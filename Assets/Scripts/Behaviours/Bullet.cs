@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject target;
+    public LineRenderer lineRenderer;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //void Update()
+    //{
+    //    if (target != null)
+    //    {
+    //        lineRenderer.SetPosition(0, transform.position);
+    //        lineRenderer.SetPosition(1, target.transform.position);
+    //    }
+    //}
 }
