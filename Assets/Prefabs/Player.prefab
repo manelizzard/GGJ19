@@ -79,9 +79,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92bf6e13e3166cd4d82bf33dfc602ee3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingShips: 10
+  startingShips: 100
   shipPrefab: {fileID: 9195560870698094995, guid: 27e94e3d46a3c42a29d7a2bda7719635,
     type: 3}
+  playerMaterial: {fileID: 0}
   displayName: Player
   playerId: -1
   color: {r: 0, g: 0, b: 1, a: 1}
+  ships: []
+  initialPlanet: {fileID: 0}

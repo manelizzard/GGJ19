@@ -35,19 +35,7 @@ public class ShipCS : ComponentSystem
                 Vector3 delta = currentShip.orbitPosition - entity.transform.position;
                 currentMobile.accel += delta * currentMobile.thrust;
             }
-
-            var neighbours = Physics2D.OverlapCircleAll(entity.transform.position, currentShip.avoidRadius, shipsMask );
-
-            foreach (var neighbour in neighbours)
-            {
-                if (neighbour.gameObject == entity.transform.gameObject) continue;
-                Vector3 separation = neighbour.transform.position - entity.transform.position;
-                if (separation.magnitude<currentShip.avoidRadius)
-                {
-                    currentMobile.accel += separation.normalized * currentShip.avoidThrust;
-                }
-            }
-
+            
         }
     }
 
