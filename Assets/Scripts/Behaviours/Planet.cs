@@ -29,10 +29,28 @@ public class Planet : MonoBehaviour
         playerOwnerMeshRenderer.gameObject.SetActive(false);
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        float alpha = 0;
+        float beta = 0;
+
+        for (int i = 0; i < 100; i++)
+        {
+            alpha = (float)i / 100f;
+            beta = (float)(i+1) / 100f;
+            Debug.DrawLine(GetOrbitPosition(alpha), GetOrbitPosition(beta), Color.yellow);
+        }
+
+        Debug.DrawLine(transform.position, GetOrbitPosition(0), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.25f), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.5f), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.75f), Color.yellow);
+    }
+
     public Vector3 GetOrbitPosition(float randomValue)
     {
         var phase = Time.time * orbitSpeed + randomValue * pi2;
-        var delta = new Vector3(Mathf.Cos(phase), Mathf.Sin(phase));
+        var delta = new Vector3(Mathf.Cos(phase), Mathf.Sin(phase), Mathf.Sin(phase)).normalized;
         return transform.position + orbitRadius * delta;
     }
 

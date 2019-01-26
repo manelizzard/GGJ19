@@ -18,6 +18,8 @@ public class Ship : MonoBehaviour
     public Player owner { get; private set; }
 
     public float shootOffset = 0.5f;
+    public float avoidRadius = 0.5f;
+    public float avoidThrust = 1f;
 
     public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue); } }
 
