@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MGJW9;
@@ -18,6 +17,11 @@ public class Planet : MonoBehaviour
     const float pi2 = 2 * Mathf.PI;
     public MeshRenderer playerOwnerMeshRenderer;
 
+    int ownerPlayerId;
+    Player playerOwner;
+
+    const int minShipsToConquer = 0;
+
     private void Awake()
     {
         inhabitants = new List<Ship>();
@@ -27,6 +31,7 @@ public class Planet : MonoBehaviour
     {
         GameManager.instance.planets.Add(this);
         playerOwnerMeshRenderer.gameObject.SetActive(false);
+        spawnTimer = 0f;
     }
 
     private void OnDrawGizmosSelected()
@@ -38,20 +43,20 @@ public class Planet : MonoBehaviour
         {
             alpha = (float)i / 100f;
             beta = (float)(i+1) / 100f;
-            Debug.DrawLine(GetOrbitPosition(alpha), GetOrbitPosition(beta), Color.yellow);
+            Debug.DrawLine(GetOrbitPosition(alpha, 0), GetOrbitPosition(beta, 0), Color.yellow);
         }
 
-        Debug.DrawLine(transform.position, GetOrbitPosition(0), Color.yellow);
-        Debug.DrawLine(transform.position, GetOrbitPosition(0.25f), Color.yellow);
-        Debug.DrawLine(transform.position, GetOrbitPosition(0.5f), Color.yellow);
-        Debug.DrawLine(transform.position, GetOrbitPosition(0.75f), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0, 0), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.25f, 0), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.5f, 0), Color.yellow);
+        Debug.DrawLine(transform.position, GetOrbitPosition(0.75f, 0), Color.yellow);
     }
 
-    public Vector3 GetOrbitPosition(float randomValue)
+    public Vector3 GetOrbitPosition(float randomValue, float randomValue2)
     {
         var phase = Time.time * orbitSpeed + randomValue * pi2;
         var delta = new Vector3(Mathf.Cos(phase), Mathf.Sin(phase), Mathf.Sin(phase)).normalized;
-        return transform.position + orbitRadius * delta;
+        return transform.position + orbitRadius * delta * (1f + randomValue2);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -77,18 +82,34 @@ public class Planet : MonoBehaviour
     private void ComputePlanetOwner() 
     {
         // Do not update owner if less than 5 inhabitants
-        if (inhabitants == null || inhabitants.Count() >= 5) {
+        if (inhabitants == null || inhabitants.Count() <= minShipsToConquer) {
             return;
         }
 
-        int ownerPlayerId = inhabitants.GroupBy(ship => ship.owner != null ? ship.owner.playerId : 0)
+        ownerPlayerId = inhabitants.GroupBy(ship => ship.owner != null ? ship.owner.playerId : 0)
             .OrderBy(group => group.Count())
             .Select(group => group.Key).FirstOrDefault();
 
-        Player player = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
-        if (player != null) {
+        playerOwner = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
+        if (playerOwner != null) {
             playerOwnerMeshRenderer.gameObject.SetActive(true);
-            playerOwnerMeshRenderer.material = player.playerPlanetMaterial;
+            playerOwnerMeshRenderer.material = playerOwner.playerPlanetMaterial;
+        }
+    }
+
+    private float spawnTimer;
+    public float timeBetweenSpawns = 3f;
+
+    private void Update()
+    {
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= timeBetweenSpawns && playerOwner != null)
+        {
+            spawnTimer = 0f;
+            var newShip = ObjectPool.Spawn(GameManager.instance.shipPrefab, playerOwner.transform, transform.position);
+            var newShipComponent = newShip.GetComponent<Ship>();
+            newShipComponent.SetOwner(playerOwner);
+            //TODO: We would need to add this new ship to GameController in the job system
         }
     }
 

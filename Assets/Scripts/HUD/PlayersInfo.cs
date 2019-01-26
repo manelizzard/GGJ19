@@ -5,13 +5,22 @@ using UnityEngine;
 public class PlayersInfo : MonoBehaviour
 {
 	public static PlayersInfo instance;
-	internal List<Player> players { get { return GameManager.instance.players; } }
 	public List<PlayerInfo> playerInfo = new List<PlayerInfo>();
 	public GameObject playerInfoPrefab;
+
+	List<int> rankedPlayers = new List<int>();
 
 	private void Awake()
 	{
 		instance = this;
+	}
+
+	[ContextMenu("AddPlayerInfo")]
+	public void AddPlayerInfo()
+	{
+		GameObject playerAdded = Instantiate(playerInfoPrefab);
+		playerAdded.transform.SetParent(transform);
+		PlayerInfo info = playerInfo.Find(x => x.gameObject == playerAdded);
 	}
 
 	public void AddPlayerInfo(Player player)
@@ -19,6 +28,13 @@ public class PlayersInfo : MonoBehaviour
 		GameObject playerAdded = Instantiate(playerInfoPrefab);
 		playerAdded.transform.SetParent(transform);
 		PlayerInfo info = playerInfo.Find(x => x.gameObject == playerAdded);
+		info.player = player;
 		info.playerId = player.playerId;
 	}
+
+	public PlayerInfo GetPlayerInfo(int playerId)
+	{
+		return playerInfo.Find(x => x.playerId == playerId);
+	}
+
 }

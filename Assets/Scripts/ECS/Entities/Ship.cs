@@ -10,18 +10,19 @@ public class Ship : MonoBehaviour
     public Bullet bulletPrefab;
     public GameObject explosionPrefab;
     public TrailRenderer trailRenderer;
+    public SpriteRenderer haloRenderer;
 
     [Range(-1f, 1f)]
     public float shootAlignment = 0.5f;
 
-    float randomValue;
-    public Player owner { get; private set; }
+    public Player owner { get; set; }
+    float randomValue, randomValue2;
 
     public float shootOffset = 0.5f;
     public float avoidRadius = 0.5f;
     public float avoidThrust = 1f;
 
-    public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue); } }
+    public Vector3 orbitPosition { get { return currentTarget.GetOrbitPosition(randomValue, randomValue2); } }
 
     private MeshRenderer meshRenderer;
 
@@ -32,6 +33,7 @@ public class Ship : MonoBehaviour
     private void Awake()
     {
         randomValue = Random.value;
+        randomValue2 = Random.value;
         transform.position += Random.insideUnitSphere;
         meshRenderer = GetComponent<MeshRenderer>();
     }
@@ -54,6 +56,10 @@ public class Ship : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            if (owner != null)
+            {
+                owner.ships.Remove(this);
+            }
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
     }
@@ -83,9 +89,12 @@ public class Ship : MonoBehaviour
     public void SetOwner(Player player)
     {
         owner = player;
-        currentTarget = player.initialPlanet;
+        owner.ships.Add(this);
+        currentTarget = player.currentTarget;
         trailRenderer.startColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
         trailRenderer.endColor = new Color(player.color.r, player.color.g, player.color.b, trailRenderer.startColor.a);
+        haloRenderer.color = new Color(player.color.r, player.color.g, player.color.b, haloRenderer.color.a);
+        SetMaterial(player.playerShipMaterial);
     }
 
     void NullifyTarget()

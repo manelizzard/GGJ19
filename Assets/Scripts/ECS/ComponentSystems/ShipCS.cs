@@ -30,10 +30,23 @@ public class ShipCS : ComponentSystem
                 currentShip.GoToRandomPlanet();
             }
 
+            if (currentShip.owner != null && currentShip.currentTarget == null)
+            {
+                currentShip.currentTarget = currentShip.owner.currentTarget;
+            }
+
             if (currentShip.currentTarget != null)
             {
-                Vector3 delta = currentShip.orbitPosition - entity.transform.position;
-                currentMobile.accel += delta * currentMobile.thrust;
+                if (currentShip.currentTarget.inhabitants.Contains(currentShip))
+                {
+                    Vector3 delta = currentShip.orbitPosition - entity.transform.position;
+                    currentMobile.accel += delta * currentMobile.thrust;
+                }
+                else
+                {
+                    Vector3 delta = currentShip.currentTarget.transform.position - entity.transform.position;
+                    currentMobile.accel += delta * currentMobile.thrust;
+                }
             }
             
         }
