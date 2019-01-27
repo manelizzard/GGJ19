@@ -4,6 +4,7 @@ using UnityEngine;
 using MGJW9;
 using MGJW9.JobySystem;
 using System.Linq;
+using DG.Tweening;
 
 public class Planet : MonoBehaviour
 {
@@ -13,10 +14,9 @@ public class Planet : MonoBehaviour
     public float radius = 1f;
     public float orbitRadius = 2f;
     public float orbitSpeed = 1f;
-
     const float pi2 = 2 * Mathf.PI;
     public MeshRenderer playerOwnerMeshRenderer;
-
+    private PlanetAnimation planetAnimation;
     int ownerPlayerId;
     Player playerOwner;
 
@@ -25,11 +25,12 @@ public class Planet : MonoBehaviour
     private void Awake()
     {
         inhabitants = new List<Ship>();
+        planetAnimation = GetComponent<PlanetAnimation>();
     }
 
     private void Start()
     {
-        GameManager.instance.planets.Add(this);
+        //GameManager.instance.planets.Add(this);
         playerOwnerMeshRenderer.gameObject.SetActive(false);
         spawnTimer = 0f;
     }
@@ -65,7 +66,6 @@ public class Planet : MonoBehaviour
         if (ship != null && ship.currentTarget == this)
         {
             inhabitants.Add(ship);
-            ComputePlanetOwner();
         }
     }
      
@@ -75,7 +75,6 @@ public class Planet : MonoBehaviour
         if (ship != null)
         {
             inhabitants.Remove(ship);
-            ComputePlanetOwner();
         }
     }
 
@@ -92,6 +91,7 @@ public class Planet : MonoBehaviour
 
         playerOwner = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
         if (playerOwner != null) {
+            planetAnimation.StartDrainingAnimation();
             playerOwnerMeshRenderer.gameObject.SetActive(true);
             playerOwnerMeshRenderer.material = playerOwner.playerPlanetMaterial;
         }
@@ -99,10 +99,13 @@ public class Planet : MonoBehaviour
 
     private float spawnTimer;
     public float timeBetweenSpawns = 3f;
+    private float consumptionUpdateRate = 1;
+    private float consumptionUpdateTime = 0;
 
     private void Update()
     {
         spawnTimer += Time.deltaTime;
+        consumptionUpdateTime = 0;
         if (spawnTimer >= timeBetweenSpawns && playerOwner != null)
         {
             spawnTimer = 0f;
@@ -110,6 +113,13 @@ public class Planet : MonoBehaviour
             var newShipComponent = newShip.GetComponent<Ship>();
             newShipComponent.SetOwner(playerOwner);
             //TODO: We would need to add this new ship to GameController in the job system
+        }
+
+        if (consumptionUpdateTime > consumptionUpdateRate) 
+        {
+            consumptionUpdateTime = consumptionUpdateRate - consumptionUpdateTime;
+            // Update owner
+            ComputePlanetOwner();
         }
     }
 

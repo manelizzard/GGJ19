@@ -59,7 +59,12 @@ ModelImporter:
     4300016: Abeto
     4300018: AbetoS
     10800000: Sol
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Texturas
+    second: {fileID: 2100000, guid: 57f0f7f31a807d649afa85adb0f71e70, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
