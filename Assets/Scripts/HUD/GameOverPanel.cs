@@ -28,6 +28,6 @@ public class GameOverPanel : MonoBehaviour
 	{
 		//Restart Game
 		Time.timeScale = timeScale;
-		SceneManager.LoadScene("SampleJesus");
+		SceneManager.LoadScene("SampleScene");
 	}
 }
