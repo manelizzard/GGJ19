@@ -157,6 +157,7 @@ public class Planet : MonoBehaviour
             var newShip = Instantiate(GameManager.instance.shipPrefab, transform.position, Quaternion.identity, playerOwner.transform);
             var newShipComponent = newShip.GetComponent<Ship>();
             newShipComponent.SetOwner(playerOwner);
+			PlayersInfo.instance.playerInfo.Find(x => x.playerId == ownerPlayerId).PrintShipCount();
         }
 
         if (consumptionUpdateTime > consumptionUpdateRate) 
@@ -166,8 +167,7 @@ public class Planet : MonoBehaviour
             ComputePlanetOwner();
         }
 
-      
-    }
+	}
 
 	private void ConquerBy(Player playerOwner)
 	{

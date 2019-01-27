@@ -52,29 +52,29 @@ public class Player : MonoBehaviour
 		attackLineRenderer.endColor = color;
 		GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
 
-        var planetIndex = -1;
-        for (var i = 0; i < GameManager.instance.planets.Count; ++i)
-        {
-            var planet = GameManager.instance.planets[i];
-            if (planet.playerOwner == null)
-            {
-                planetIndex = i;
-                break;
-            }
-        }
+		var planetIndex = -1;
+		for (var i = 0; i < GameManager.instance.planets.Count; ++i)
+		{
+			var planet = GameManager.instance.planets[i];
+			if (planet.playerOwner == null)
+			{
+				planetIndex = i;
+				break;
+			}
+		}
 
-        if (planetIndex != -1)
-        {
-            GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[planetIndex]);
+		if (planetIndex != -1)
+		{
+			GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[planetIndex]);
 
-            // Spawn ships
-            SpawnShips();
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
+			// Spawn ships
+			SpawnShips();
+		}
+		else
+		{
+			Destroy(this.gameObject);
+		}
+	}
 
 	private void Start()
 	{
@@ -83,49 +83,72 @@ public class Player : MonoBehaviour
 	}
 
 
-	private void SpawnShips() 
-    {
-        initialPlanet = GameManager.instance.playerPlanets[playerId][0];
-        previousTarget = initialPlanet;
-        currentTarget = initialPlanet;
+	private void SpawnShips()
+	{
+		initialPlanet = GameManager.instance.playerPlanets[playerId][0];
+		previousTarget = initialPlanet;
+		currentTarget = initialPlanet;
 
-        for (int i = 0; i < startingShips; i++) 
-        {
-            // Instantiate in first planet
-            GameObject go = Instantiate(shipPrefab, this.transform);
-            go.transform.position = initialPlanet.transform.position + Random.insideUnitSphere * initialPlanet.orbitRadius*0.25f;
-            Ship shipModel = go.GetComponent<Ship>();
-            //ships.Add(shipModel);
-            shipModel.SetOwner(this);
-        }
-        
-        //GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
+		for (int i = 0; i < startingShips; i++)
+		{
+			// Instantiate in first planet
+			GameObject go = Instantiate(shipPrefab, this.transform);
+			go.transform.position = initialPlanet.transform.position + Random.insideUnitSphere * initialPlanet.orbitRadius * 0.25f;
+			Ship shipModel = go.GetComponent<Ship>();
+			//ships.Add(shipModel);
+			shipModel.SetOwner(this);
+		}
+
+		//GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
 		//GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintPlanetsCount();
-    }
+	}
 
-    void Update()
-    {
-        bool buttonPressed = hftInput.GetButtonDown("fire1") || Input.GetMouseButtonDown(0);
-        if (buttonPressed && GameManager.instance.cursor.currentFocusedPlanet != null)
-        {
-            previousTarget = currentTarget;
-            currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
-            foreach (Ship ship in ships)
-            {
+	void Update()
+	{
+		bool buttonPressed = hftInput.GetButtonDown("fire1") || Input.GetMouseButtonDown(0);
+		if (buttonPressed && GameManager.instance.cursor.currentFocusedPlanet != null)
+		{
+			previousTarget = currentTarget;
+			currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
+			foreach (Ship ship in ships)
+			{
 
-                ship.currentTarget = currentTarget;
-                ship.arrivedAtTarget = false;
-            }
-            attackLineRenderer.SetPosition(0, averagePosition);
-            attackLineRenderer.SetPosition(1, currentTarget.transform.position);
-            lastCommandTime = Time.time;
-        }
+				ship.currentTarget = currentTarget;
+				ship.arrivedAtTarget = false;
+			}
+			attackLineRenderer.SetPosition(0, averagePosition);
+			attackLineRenderer.SetPosition(1, currentTarget.transform.position);
+			lastCommandTime = Time.time;
+		}
 
-        bool attackedRightNow = Time.time - lastCommandTime < 1f;
-        attackLineRenderer.enabled = attackedRightNow;
-    }
+		if (ships.Count <= 0)
+		{
+			if (GameManager.instance.playerPlanets[playerId].Count <= 0)
+			{
+				//This player can't play anymore
+				RemoveThisPlayer();
+			}
+			else
+			{
+				bool remove = true;
+				foreach (Planet planet in GameManager.instance.playerPlanets[playerId])
+				{
+					remove &= planet.planetAnimation.currentPlanetEnergy == 0;
+				}
 
-  
+				if (remove)
+				{
+					//This player can't play anymore
+					RemoveThisPlayer();
+				}
+			}
+		}
+
+		bool attackedRightNow = Time.time - lastCommandTime < 1f;
+		attackLineRenderer.enabled = attackedRightNow && !removed;
+	}
+
+
 	private void LateUpdate()
 	{
 		averagePosition = Vector3.zero;
@@ -150,6 +173,7 @@ public class Player : MonoBehaviour
 
 	public void RemoveThisPlayer()
 	{
+		Debug.Log("Player removed " + playerId);
 		GameManager.instance.removedPlayers.Add(this);
 		removed = true;
 		if (GameManager.instance.removedPlayers.Count == GameManager.instance.players.Count - 1)

@@ -38,13 +38,13 @@ public class PlayerInfo : MonoBehaviour
 
 	public void PrintShipCount()
 	{
-		shipsCountText.text = "Ships owned: " + shipsCount.ToString();
+		shipsCountText.text = "Ships: " + shipsCount.ToString();
 		SetRankPosition();
 	}
 
 	public void PrintPlanetsCount()
 	{
-		planetsCountText.text = "Panets conquered: " + planetsCount.ToString();
+		planetsCountText.text = "Panets: " + planetsCount.ToString();
 	}
 
 	public void SetRankPosition()
