@@ -4,5 +4,13 @@
         <relationship name="folder">
             <destination>{b14354aa-12c5-4dff-947b-a245d120ffee}</destination>
         </relationship>
+        <relationship name="audioTable">
+            <destination>{bb164d04-3a1c-4b33-b7a7-fa07e57bcd8c}</destination>
+        </relationship>
+    </object>
+    <object class="AudioTable" id="{bb164d04-3a1c-4b33-b7a7-fa07e57bcd8c}">
+        <property name="name">
+            <value>Audio Table</value>
+        </property>
     </object>
 </objects>

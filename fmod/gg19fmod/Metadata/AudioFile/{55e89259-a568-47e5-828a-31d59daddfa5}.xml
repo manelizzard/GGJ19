@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{55e89259-a568-47e5-828a-31d59daddfa5}">
+        <property name="assetPath">
+            <value>0017_explo_grenade_08_PremiumBeat.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>4.5761874999999996</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{deea983c-cca6-434e-a742-3a04ff5d8fc3}</destination>
+        </relationship>
+    </object>
+</objects>
