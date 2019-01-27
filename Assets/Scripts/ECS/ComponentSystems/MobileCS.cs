@@ -3,32 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 
-public class MobileCS : ComponentSystem
-{
+//public class MobileCS : ComponentSystem
+//{
 
-    struct Components
-    {
-        public Mobile mobile;
-        public Transform transform;
-    }
+//    const float timeScale = 3;
 
-    protected override void OnUpdate()
-    {
-        float deltaTime = Time.deltaTime;
+//    struct Components
+//    {
+//        public Mobile mobile;
+//        public Transform transform;
+//    }
 
-        foreach (var entity in GetEntities<Components>())
-        {
-            var currentMobile = entity.mobile;
+//    protected override void OnUpdate()
+//    {
+//        float deltaTime = Time.deltaTime * timeScale;
 
-            currentMobile.speed += currentMobile.accel * deltaTime;
-            currentMobile.speed = currentMobile.speed.normalized * Mathf.Min(currentMobile.speed.magnitude, currentMobile.maxSpeed);
+//        foreach (var entity in GetEntities<Components>())
+//        {
+//            var currentMobile = entity.mobile;
 
-            currentMobile.position += currentMobile.speed * deltaTime;
-            entity.transform.position = currentMobile.position;
-            entity.transform.LookAt(entity.transform.position + currentMobile.speed);
+//            currentMobile.speed += currentMobile.accel * deltaTime;
+//            currentMobile.speed = currentMobile.speed.normalized * Mathf.Min(currentMobile.speed.magnitude, currentMobile.maxSpeed);
 
-            currentMobile.accel = Vector3.zero;
-        }
-    }
+//            currentMobile.position += currentMobile.speed * deltaTime;
+//            entity.transform.position = currentMobile.position;
+//            entity.transform.LookAt(entity.transform.position + currentMobile.speed);
 
-}
+//            currentMobile.accel = Vector3.zero;
+//        }
+//    }
+
+//}

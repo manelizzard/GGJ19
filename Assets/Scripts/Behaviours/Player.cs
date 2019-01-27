@@ -4,59 +4,61 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int startingShips = 10;
-    public GameObject shipPrefab;
+	public int startingShips = 10;
+	public GameObject shipPrefab;
+
+	public Material playerMaterial;
 
     public Material playerShipMaterial;
     public Material playerPlanetMaterial;
 
-    // Instantiation
-    private HFTInput hftInput;
-    private HFTGamepad hftGamepad;
-
-    // Data
-    public string displayName = "Player";
-    public int playerId = -1;
-    public Color color = Color.blue;
-    public List<Ship> ships;
-    public Planet initialPlanet;
+	// Data
+	public string displayName = "Player";
+	public int playerId = -1;
+	public Color color = Color.blue;
+	public List<Ship> ships;
+	public Planet initialPlanet;
+    
     public LineRenderer attackLineRenderer;
 
     Planet previousTarget;
     public Planet currentTarget;
 
+    HFTInput hftInput;
+    HFTGamepad hftGamepad;
+
     float lastCommandTime = -10;
 
-    [HideInInspector]public Vector3 averagePosition;
+    [HideInInspector] public int shipCount = 0;
+    [HideInInspector] public Vector3 averagePosition;
 
-    void Awake()
+    private void Awake()
     {
-        ships = new List<Ship>();
         hftInput = GetComponent<HFTInput>();
         hftGamepad = GetComponent<HFTGamepad>();
-
         playerId = GetInstanceID();
-        color = hftGamepad.color;
+		color = hftGamepad.color;
+		playerMaterial = new Material(Shader.Find("Specular"));
+		playerMaterial.color = color;
 
         // Create a material copy
         playerShipMaterial = Material.Instantiate(playerShipMaterial);
-        playerShipMaterial.SetColor("_Color", color);
         playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
+        playerShipMaterial.SetColor("_Color", color);
         playerPlanetMaterial.SetColor("_Color", color);
         attackLineRenderer.startColor = color;
         attackLineRenderer.endColor = color;
-
-        // Assign random planet to spawned player
         GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
         GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
-    
+
         // Spawn ships
         SpawnShips();
-    }
+	}
 
 	private void Start()
 	{
 		GameManager.instance.players.Add(this);
+		//GameManager.instance.PlayersInfo.AddPlayerInfo(this);
 	}
 
 	private void SpawnShips() 
@@ -69,12 +71,14 @@ public class Player : MonoBehaviour
         {
             // Instantiate in first planet
             GameObject go = Instantiate(shipPrefab, this.transform);
-            go.transform.position = initialPlanet.transform.position;
+            go.transform.position = initialPlanet.transform.position + Random.insideUnitSphere * initialPlanet.orbitRadius*0.25f;
             Ship shipModel = go.GetComponent<Ship>();
             ships.Add(shipModel);
             shipModel.SetOwner(this);
-            shipModel.SetMaterial(playerShipMaterial);
         }
+        
+        //GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
+		//GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintPlanetsCount();
     }
 
     void Update()
@@ -84,9 +88,10 @@ public class Player : MonoBehaviour
         {
             previousTarget = currentTarget;
             currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
-            foreach (Ship s in ships)
+            foreach (Ship ship in ships)
             {
-                s.currentTarget = currentTarget;
+                ship.currentTarget = currentTarget;
+                ship.arrivedAtTarget = false;
             }
             attackLineRenderer.SetPosition(0, averagePosition);
             attackLineRenderer.SetPosition(1, currentTarget.transform.position);
@@ -100,14 +105,23 @@ public class Player : MonoBehaviour
     private void LateUpdate()
     {
         averagePosition = Vector3.zero;
+        shipCount = 0;
         foreach (var ship in ships)
         {
             if (ship != null)
             {
+                shipCount++;
                 averagePosition += ship.transform.position;
             }
         }
-        averagePosition = averagePosition / ships.Count;
+        if (shipCount!=0)
+        {
+            averagePosition = averagePosition / shipCount;
+        }
+        else
+        {
+            averagePosition = Vector3.zero;
+        }
     }
 
 }

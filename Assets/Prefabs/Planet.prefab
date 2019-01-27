@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 3336668902639898470}
   - component: {fileID: 3336668902639898469}
   - component: {fileID: 3336668902639898464}
-  - component: {fileID: 3336668902639898468}
-  - component: {fileID: 199360320265715936}
+  - component: {fileID: 4626646607235793688}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -94,38 +93,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inhabitants: []
-  radius: 1
-  orbitRadius: 1.5
-  orbitSpeed: 2
+  orbitRadius: 2
+  orbitSpeed: 0.5
   playerOwnerMeshRenderer: {fileID: 7246202135912802714}
---- !u!114 &3336668902639898468
-MonoBehaviour:
+  timeBetweenSpawns: 3
+--- !u!135 &4626646607235793688
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3336668902639898491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bf10cdea1344482e91a4f2b58506b77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!58 &199360320265715936
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3336668902639898491}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1.25
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5986371527372749780
 GameObject:
   m_ObjectHideFlags: 0
