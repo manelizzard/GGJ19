@@ -112,14 +112,17 @@ public class Ship : MonoBehaviour
                 {
                     currentTarget.inhabitants.Remove(this);
                     currentTarget.ComputePlanetOwner();
-                }
-            }
+					PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
+				}
+			}
 
             if (owner != null)
             {
                 owner.ships.Remove(this);
-            }
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+				PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
+
+			}
+			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
     }
 

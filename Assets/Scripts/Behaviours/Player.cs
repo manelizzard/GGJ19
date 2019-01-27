@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
 	private void Start()
 	{
 		GameManager.instance.players.Add(this);
-		//GameManager.instance.PlayersInfo.AddPlayerInfo(this);
+		GameManager.instance.PlayersInfo.AddPlayerInfo(this);
 	}
 
 	private void SpawnShips() 
@@ -76,9 +76,6 @@ public class Player : MonoBehaviour
             ships.Add(shipModel);
             shipModel.SetOwner(this);
         }
-        
-        //GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
-		//GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintPlanetsCount();
     }
 
     void Update()
