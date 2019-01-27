@@ -41,8 +41,6 @@ public class PlanetAnimation : MonoBehaviour
             .SetLoops(-1)
             .SetAutoKill(false)
             .Play();
-
-        StartDrainingAnimation();
     }
 
     void Update() 

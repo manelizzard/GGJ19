@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b228199998f4d74a9444efb012c20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planetDrainAnimationDuration: 60
+  planetDrainAnimationDuration: 300
   innerPlanetTransform: {fileID: 4943910024466352634}
   initialModels: {fileID: 4943910024466352614}
   middleModels: {fileID: 4943910024466352612}

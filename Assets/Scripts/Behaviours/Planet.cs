@@ -90,11 +90,39 @@ public class Planet : MonoBehaviour
             return;
         }
 
-        ownerPlayerId = inhabitants.GroupBy(ship => ship.owner != null ? ship.owner.playerId : 0)
-            .OrderBy(group => group.Count())
-            .Select(group => group.Key).FirstOrDefault();
+        var playersInhabitants = new Dictionary<int, int>();
+        var currentWinnerPlayerId = -1;
+        var currentWinnerNumShips = 0;
+        for (int i = 0; i < inhabitants.Count; ++i)
+        {
+            var ship = inhabitants[i];
+            var playerId = ship.owner.playerId;
+            if (!playersInhabitants.ContainsKey(playerId))
+            {
+                playersInhabitants.Add(playerId, 0);
+            }
 
-        playerOwner = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
+            var numShipsPlayer = playersInhabitants[playerId];
+            ++numShipsPlayer;
+
+            if (numShipsPlayer > currentWinnerNumShips)
+            {
+                currentWinnerPlayerId = playerId;
+                currentWinnerNumShips = numShipsPlayer;
+            }
+
+            playersInhabitants[playerId] = numShipsPlayer;
+        }
+        
+        /*ownerPlayerId = inhabitants.GroupBy(ship => ship.owner != null ? ship.owner.playerId : 0)
+            .OrderBy(group => group.Count())
+            .Select(group => group.Key).FirstOrDefault();*/
+
+        var result = GameManager.instance.players.SingleOrDefault(p => p.playerId == currentWinnerPlayerId);
+        if (result != null)
+        {
+            playerOwner = result;
+        }
         if (playerOwner != null) {
             planetAnimation.StartDrainingAnimation();
 
@@ -106,8 +134,8 @@ public class Planet : MonoBehaviour
     private void Update()
     {
         spawnTimer += Time.deltaTime;
-        consumptionUpdateTime = 0;
-        if (spawnTimer >= timeBetweenSpawns && playerOwner != null)
+        consumptionUpdateTime += Time.deltaTime;
+        if (spawnTimer >= timeBetweenSpawns && playerOwner != null && planetAnimation.currentPlanetEnergy > 0)
         {
             spawnTimer = 0f;
             var newShip = ObjectPool.Spawn(GameManager.instance.shipPrefab, playerOwner.transform, transform.position);
