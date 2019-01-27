@@ -19,7 +19,11 @@ public class PlanetAnimation : MonoBehaviour
     
     private Sequence saturationSeq;
     void Start()
-    {        
+    {
+
+        middleModels.localScale = middleModels.localScale / 2;
+        endModels.localScale = endModels.localScale / 2;
+
         DOTween.Sequence()
             .Append(innerPlanetTransform.DORotate(new Vector3(0, 360, 0),
                 20f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear))

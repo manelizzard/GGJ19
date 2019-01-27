@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
             GameObject go = Instantiate(shipPrefab, this.transform);
             go.transform.position = initialPlanet.transform.position + Random.insideUnitSphere * initialPlanet.orbitRadius*0.25f;
             Ship shipModel = go.GetComponent<Ship>();
-            ships.Add(shipModel);
+            //ships.Add(shipModel);
             shipModel.SetOwner(this);
         }
         
@@ -90,6 +90,7 @@ public class Player : MonoBehaviour
             currentTarget = GameManager.instance.cursor.currentFocusedPlanet;
             foreach (Ship ship in ships)
             {
+
                 ship.currentTarget = currentTarget;
                 ship.arrivedAtTarget = false;
             }

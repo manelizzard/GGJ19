@@ -106,12 +106,12 @@ public class Ship : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            if (currentTarget != null && arrivedAtTarget)
+            if (currentTarget != null)// && arrivedAtTarget)
             {
                 if (currentTarget.inhabitants.Contains(this))
                 {
-                    currentTarget.inhabitants.Remove(this);
-                    currentTarget.ComputePlanetOwner();
+                    //currentTarget.inhabitants.Remove(this);
+                    //currentTarget.ComputePlanetOwner();
                 }
             }
 
@@ -141,6 +141,7 @@ public class Ship : MonoBehaviour
                 currentBullet.shootOffset = shootOffset;
                 currentBullet.target = collision.gameObject;
                 Invoke("NullifyTarget", 0.2f);
+                //NullifyTarget();
             }
         }
     }
@@ -158,8 +159,10 @@ public class Ship : MonoBehaviour
 
     void NullifyTarget()
     {
+        currentTarget.inhabitants.Remove(this);
+        currentTarget.ComputePlanetOwner();
         currentBullet.CancelTarget();
-        currentTarget = null;
+        //currentTarget = null;
     }
 
 }

@@ -17,6 +17,7 @@ public class Planet : MonoBehaviour
     public MeshRenderer playerOwnerMeshRenderer;
     private PlanetAnimation planetAnimation;
     int ownerPlayerId;
+    Player previousOwner;
     Player playerOwner;
 
     const int minShipsToConquer = 0;
@@ -90,6 +91,15 @@ public class Planet : MonoBehaviour
             return;
         }
 
+        for (int i = inhabitants.Count - 1; i >= 0; --i)
+        {
+            if (inhabitants[i] == null)
+            {
+                inhabitants.Remove(inhabitants[i]);
+            }
+        }
+
+
         var playersInhabitants = new Dictionary<int, int>();
         var currentWinnerPlayerId = -1;
         var currentWinnerNumShips = 0;
@@ -121,9 +131,11 @@ public class Planet : MonoBehaviour
         var result = GameManager.instance.players.SingleOrDefault(p => p.playerId == currentWinnerPlayerId);
         if (result != null)
         {
+            previousOwner = playerOwner;
             playerOwner = result;
         }
-        if (playerOwner != null) {
+        if (playerOwner != null)
+        {
             planetAnimation.StartDrainingAnimation();
 
             playerOwnerMeshRenderer.gameObject.SetActive(true);
@@ -131,6 +143,8 @@ public class Planet : MonoBehaviour
         }
     }
 
+    //private float 
+    //private float cleanupTime = 5f;
     private void Update()
     {
         spawnTimer += Time.deltaTime;
@@ -138,10 +152,10 @@ public class Planet : MonoBehaviour
         if (spawnTimer >= timeBetweenSpawns && playerOwner != null && planetAnimation.currentPlanetEnergy > 0)
         {
             spawnTimer = 0f;
-            var newShip = ObjectPool.Spawn(GameManager.instance.shipPrefab, playerOwner.transform, transform.position);
+            //var newShip = ObjectPool.Spawn(GameManager.instance.shipPrefab, playerOwner.transform, transform.position);
+            var newShip = Instantiate(GameManager.instance.shipPrefab, transform.position, Quaternion.identity, playerOwner.transform);
             var newShipComponent = newShip.GetComponent<Ship>();
             newShipComponent.SetOwner(playerOwner);
-            //TODO: We would need to add this new ship to GameController in the job system
         }
 
         if (consumptionUpdateTime > consumptionUpdateRate) 
@@ -150,6 +164,8 @@ public class Planet : MonoBehaviour
             // Update owner
             ComputePlanetOwner();
         }
+
+      
     }
 
 }
