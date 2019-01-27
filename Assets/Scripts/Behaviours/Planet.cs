@@ -15,7 +15,7 @@ public class Planet : MonoBehaviour
 	public float orbitSpeed = 1f;
 	const float pi2 = 2 * Mathf.PI;
 	public MeshRenderer playerOwnerMeshRenderer;
-	private PlanetAnimation planetAnimation;
+	public PlanetAnimation planetAnimation;
 	int ownerPlayerId;
 	Player playerOwner;
 

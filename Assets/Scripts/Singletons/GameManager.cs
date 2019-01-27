@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public GameObject shipPrefab;
     public GameObject playerPrefab;
 
+	public List<Player> removedPlayers;
+
     private void Awake()
     {
         playerPlanets = new Dictionary<int, List<Planet>>();
