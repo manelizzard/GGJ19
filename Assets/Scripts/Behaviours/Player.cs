@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
 
 	internal bool removed = false;
 
+    public static int playersTargetedToCurrentPlanet;
+
 	private void Awake()
 	{
 		hftInput = GetComponent<HFTInput>();
@@ -98,9 +100,6 @@ public class Player : MonoBehaviour
 			//ships.Add(shipModel);
 			shipModel.SetOwner(this);
 		}
-
-		//GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintShipCount();
-		//GameManager.instance.PlayersInfo.GetPlayerInfo(playerId).PrintPlanetsCount();
 	}
 
 	void Update()
@@ -147,7 +146,6 @@ public class Player : MonoBehaviour
 		bool attackedRightNow = Time.time - lastCommandTime < 1f;
 		attackLineRenderer.enabled = attackedRightNow && !removed;
 	}
-
 
 	private void LateUpdate()
 	{

@@ -33,6 +33,8 @@ public class PlanetCursor : MonoBehaviour
             // Place cursor at planet position
             currentFocusedPlanet = GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)];
             this.transform.position = currentFocusedPlanet.transform.position;
+
+            Player.playersTargetedToCurrentPlanet = 0;
         }    
     }
 }
