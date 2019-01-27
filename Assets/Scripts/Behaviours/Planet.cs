@@ -11,7 +11,6 @@ public class Planet : MonoBehaviour
 
     public List<Ship> inhabitants;
 
-    public float radius = 1f;
     public float orbitRadius = 2f;
     public float orbitSpeed = 1f;
     const float pi2 = 2 * Mathf.PI;
@@ -22,6 +21,11 @@ public class Planet : MonoBehaviour
 
     const int minShipsToConquer = 0;
 
+    private float spawnTimer;
+    public float timeBetweenSpawns = 3f;
+    private float consumptionUpdateRate = 1;
+    private float consumptionUpdateTime = 0;
+
     private void Awake()
     {
         inhabitants = new List<Ship>();
@@ -30,12 +34,12 @@ public class Planet : MonoBehaviour
 
     private void Start()
     {
-        //GameManager.instance.planets.Add(this);
+        GameManager.instance.planets.Add(this);
         playerOwnerMeshRenderer.gameObject.SetActive(false);
         spawnTimer = 0f;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         float alpha = 0;
         float beta = 0;
@@ -57,19 +61,20 @@ public class Planet : MonoBehaviour
     {
         var phase = Time.time * orbitSpeed + randomValue * pi2;
         var delta = new Vector3(Mathf.Cos(phase), Mathf.Sin(phase), Mathf.Sin(phase)).normalized;
-        return transform.position + orbitRadius * delta * (1f + randomValue2);
+        return transform.position + orbitRadius * delta * randomValue2;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         var ship = collision.gameObject.GetComponent<Ship>();
         if (ship != null && ship.currentTarget == this)
         {
+            ship.arrivedAtTarget = true;
             inhabitants.Add(ship);
         }
     }
-     
-    private void OnTriggerExit2D(Collider2D collision)
+
+    private void OnTriggerExit(Collider collision)
     {
         var ship = collision.gameObject.GetComponent<Ship>();
         if (ship != null)
@@ -78,10 +83,10 @@ public class Planet : MonoBehaviour
         }
     }
 
-    private void ComputePlanetOwner() 
+    public void ComputePlanetOwner() 
     {
-        // Do not update owner if less than 5 inhabitants
-        if (inhabitants == null || inhabitants.Count() <= minShipsToConquer) {
+        if (inhabitants == null)
+        {
             return;
         }
 
@@ -92,15 +97,11 @@ public class Planet : MonoBehaviour
         playerOwner = GameManager.instance.players.SingleOrDefault(p => p.playerId == ownerPlayerId);
         if (playerOwner != null) {
             planetAnimation.StartDrainingAnimation();
+
             playerOwnerMeshRenderer.gameObject.SetActive(true);
             playerOwnerMeshRenderer.material = playerOwner.playerPlanetMaterial;
         }
     }
-
-    private float spawnTimer;
-    public float timeBetweenSpawns = 3f;
-    private float consumptionUpdateRate = 1;
-    private float consumptionUpdateTime = 0;
 
     private void Update()
     {

@@ -16,6 +16,8 @@ public class PlanetAnimation : MonoBehaviour
     
     public float currentPlanetEnergy = 100;
     public float maxPlanetEnergy = 100;
+    
+    private Sequence saturationSeq;
     void Start()
     {        
         DOTween.Sequence()
@@ -26,6 +28,7 @@ public class PlanetAnimation : MonoBehaviour
             .Play();
 
         DOTween.Sequence()
+            .AppendInterval(Random.Range(0, 2))
             .Append(DOTween.To(() => transform.localPosition, 
                 x => transform.localPosition = x, 
                 new Vector3(transform.localPosition.x, transform.localPosition.y + .1f, transform.localPosition.z),
@@ -42,28 +45,27 @@ public class PlanetAnimation : MonoBehaviour
         StartDrainingAnimation();
     }
 
+    void Update() 
+    {
+        if (draining) {
+            float diff = maxPlanetEnergy / 2;
+            float saturation = Mathf.Lerp(0, 1, (diff - currentPlanetEnergy) / diff);
+
+            float h, s, v;
+            Color.RGBToHSV(planetMeshRenderers[0].material.color, out h, out s, out v);
+            foreach(MeshRenderer r in planetMeshRenderers) {
+                r.material.color = Color.HSVToRGB(h, saturation, v);
+            }
+        }
+    }
+
     public void StartDrainingAnimation() 
     {
         if (draining == false) {
             DOTween.Sequence()
                 .AppendCallback(() => {
-                    float h, s, v;
-                    Color.RGBToHSV(planetMeshRenderers[0].material.color, out h, out s, out v);
-
                     if (currentPlanetEnergy >= 0) {
                         currentPlanetEnergy -= 1;
-
-                        float blendAlbedoValue = Mathf.Max(0, maxPlanetEnergy - currentPlanetEnergy - maxPlanetEnergy/2);
-                        blendAlbedoValue *= 2;
-                        float saturation = (blendAlbedoValue % maxPlanetEnergy) / maxPlanetEnergy;
-                        foreach(MeshRenderer r in planetMeshRenderers) {
-                            r.material.color = Color.HSVToRGB(h, saturation, v);
-                        }
-                    }
-                    else {
-                        foreach(MeshRenderer r in planetMeshRenderers) {
-                            r.material.color = Color.HSVToRGB(h, 1, v);
-                        }
                     }
                 })
                 // Wait

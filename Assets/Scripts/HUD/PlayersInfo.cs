@@ -25,11 +25,10 @@ public class PlayersInfo : MonoBehaviour
 
 	public void AddPlayerInfo(Player player)
 	{
-		GameObject playerAdded = Instantiate(playerInfoPrefab);
-		playerAdded.transform.SetParent(transform);
-		PlayerInfo info = playerInfo.Find(x => x.gameObject == playerAdded);
-		info.player = player;
-		info.playerId = player.playerId;
+		GameObject playerAdded = Instantiate(playerInfoPrefab, transform);
+		PlayerInfo newInfo = playerAdded.GetComponent<PlayerInfo>();
+		playerInfo.Add(newInfo);
+		newInfo.player = player;
 	}
 
 	public PlayerInfo GetPlayerInfo(int playerId)
