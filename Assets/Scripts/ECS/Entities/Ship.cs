@@ -107,6 +107,7 @@ public class Ship : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             if (currentTarget != null && arrivedAtTarget)
             {
                 if (currentTarget.inhabitants.Contains(this))
@@ -126,7 +127,6 @@ public class Ship : MonoBehaviour
 					RemovedPlayer();
 				}
 			}
-			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
     }
 
