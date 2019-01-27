@@ -81,6 +81,7 @@ public class Ship : MonoBehaviour
         }
 
         rb.velocity = rb.velocity.normalized * Mathf.Min(rb.velocity.magnitude, maxSpeed);
+        transform.LookAt(transform.position + rb.velocity);
     }
 
     private void OnDrawGizmos()
@@ -106,20 +107,26 @@ public class Ship : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            if (currentTarget != null)// && arrivedAtTarget)
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            if (currentTarget != null && arrivedAtTarget)
             {
                 if (currentTarget.inhabitants.Contains(this))
                 {
                     //currentTarget.inhabitants.Remove(this);
                     //currentTarget.ComputePlanetOwner();
-                }
-            }
+					//PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
+				}
+			}
 
             if (owner != null)
             {
                 owner.ships.Remove(this);
-            }
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+				PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
+				if(owner.shipCount <= 0)
+				{
+					RemovedPlayer();
+				}
+			}
         }
     }
 
@@ -141,7 +148,6 @@ public class Ship : MonoBehaviour
                 currentBullet.shootOffset = shootOffset;
                 currentBullet.target = collision.gameObject;
                 Invoke("NullifyTarget", 0.2f);
-                //NullifyTarget();
             }
         }
     }
@@ -164,5 +170,28 @@ public class Ship : MonoBehaviour
         currentBullet.CancelTarget();
         //currentTarget = null;
     }
+
+	void RemovedPlayer()
+	{
+		if(GameManager.instance.playerPlanets[owner.playerId].Count <= 0)
+		{
+			//This player can't play anymore
+			owner.RemoveThisPlayer();
+		}
+		else
+		{
+			bool remove = true;
+			foreach(Planet planet in GameManager.instance.playerPlanets[owner.playerId])
+			{
+				remove &= planet.planetAnimation.currentPlanetEnergy == 0;
+			}
+
+			if (remove)
+			{
+				//This player can't play anymore
+				owner.RemoveThisPlayer();
+			}
+		}
+	}
 
 }

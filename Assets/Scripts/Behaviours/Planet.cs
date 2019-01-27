@@ -15,7 +15,7 @@ public class Planet : MonoBehaviour
     public float orbitSpeed = 1f;
     const float pi2 = 2 * Mathf.PI;
     public MeshRenderer playerOwnerMeshRenderer;
-    private PlanetAnimation planetAnimation;
+    public PlanetAnimation planetAnimation;
     int ownerPlayerId;
     Player previousOwner;
     Player playerOwner;
@@ -168,4 +168,20 @@ public class Planet : MonoBehaviour
       
     }
 
+	private void ConquerBy(Player playerOwner)
+	{
+		foreach (var playerPlanetList in GameManager.instance.playerPlanets)
+		{
+			if (playerPlanetList.Value.Contains(this))
+			{
+				playerPlanetList.Value.Remove(this);
+			}
+		}
+
+		GameManager.instance.playerPlanets[playerOwner.playerId].Add(this);
+		planetAnimation.StartDrainingAnimation();
+		playerOwnerMeshRenderer.gameObject.SetActive(true);
+		playerOwnerMeshRenderer.material = playerOwner.playerPlanetMaterial;
+		PlayersInfo.instance.playerInfo.ForEach(x => x.PrintPlanetsCount());
+	}
 }

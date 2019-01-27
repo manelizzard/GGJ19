@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
 
 	public Material playerMaterial;
 
-    public Material playerShipMaterial;
-    public Material playerPlanetMaterial;
+	public Material playerShipMaterial;
+	public Material playerPlanetMaterial;
 
 	// Data
 	public string displayName = "Player";
@@ -18,48 +18,51 @@ public class Player : MonoBehaviour
 	public Color color = Color.blue;
 	public List<Ship> ships;
 	public Planet initialPlanet;
-    
-    public LineRenderer attackLineRenderer;
 
-    Planet previousTarget;
-    public Planet currentTarget;
+	public LineRenderer attackLineRenderer;
 
-    HFTInput hftInput;
-    HFTGamepad hftGamepad;
+	Planet previousTarget;
+	public Planet currentTarget;
 
-    float lastCommandTime = -10;
+	HFTInput hftInput;
+	HFTGamepad hftGamepad;
 
-    [HideInInspector] public int shipCount = 0;
-    [HideInInspector] public Vector3 averagePosition;
+	float lastCommandTime = -10;
 
-    private void Awake()
-    {
-        hftInput = GetComponent<HFTInput>();
-        hftGamepad = GetComponent<HFTGamepad>();
-        playerId = GetInstanceID();
+	[HideInInspector] public int shipCount = 0;
+	[HideInInspector] public Vector3 averagePosition;
+
+	internal bool removed = false;
+
+	private void Awake()
+	{
+		hftInput = GetComponent<HFTInput>();
+		hftGamepad = GetComponent<HFTGamepad>();
+		playerId = GetInstanceID();
 		color = hftGamepad.color;
 		playerMaterial = new Material(Shader.Find("Specular"));
 		playerMaterial.color = color;
 
-        // Create a material copy
-        playerShipMaterial = Material.Instantiate(playerShipMaterial);
-        playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
-        playerShipMaterial.SetColor("_Color", color);
-        playerPlanetMaterial.SetColor("_Color", color);
-        attackLineRenderer.startColor = color;
-        attackLineRenderer.endColor = color;
-        GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
-        GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
+		// Create a material copy
+		playerShipMaterial = Material.Instantiate(playerShipMaterial);
+		playerPlanetMaterial = Material.Instantiate(playerPlanetMaterial);
+		playerShipMaterial.SetColor("_Color", color);
+		playerPlanetMaterial.SetColor("_Color", color);
+		attackLineRenderer.startColor = color;
+		attackLineRenderer.endColor = color;
+		GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
+		GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
 
-        // Spawn ships
-        SpawnShips();
+		// Spawn ships
+		SpawnShips();
 	}
 
 	private void Start()
 	{
 		GameManager.instance.players.Add(this);
-		//GameManager.instance.PlayersInfo.AddPlayerInfo(this);
+		GameManager.instance.PlayersInfo.AddPlayerInfo(this);
 	}
+
 
 	private void SpawnShips() 
     {
@@ -103,26 +106,38 @@ public class Player : MonoBehaviour
         attackLineRenderer.enabled = attackedRightNow;
     }
 
-    private void LateUpdate()
-    {
-        averagePosition = Vector3.zero;
-        shipCount = 0;
-        foreach (var ship in ships)
-        {
-            if (ship != null)
-            {
-                shipCount++;
-                averagePosition += ship.transform.position;
-            }
-        }
-        if (shipCount!=0)
-        {
-            averagePosition = averagePosition / shipCount;
-        }
-        else
-        {
-            averagePosition = Vector3.zero;
-        }
-    }
+  
+	private void LateUpdate()
+	{
+		averagePosition = Vector3.zero;
+		shipCount = 0;
+		foreach (var ship in ships)
+		{
+			if (ship != null)
+			{
+				shipCount++;
+				averagePosition += ship.transform.position;
+			}
+		}
+		if (shipCount != 0)
+		{
+			averagePosition = averagePosition / shipCount;
+		}
+		else
+		{
+			averagePosition = Vector3.zero;
+		}
+	}
+
+	public void RemoveThisPlayer()
+	{
+		GameManager.instance.removedPlayers.Add(this);
+		removed = true;
+		if (GameManager.instance.removedPlayers.Count == GameManager.instance.players.Count - 1)
+		{
+			//Game Over
+			GameOverPanel.instance.GameOver();
+		}
+	}
 
 }
