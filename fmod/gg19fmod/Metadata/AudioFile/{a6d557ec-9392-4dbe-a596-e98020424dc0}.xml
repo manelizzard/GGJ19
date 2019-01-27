@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{a6d557ec-9392-4dbe-a596-e98020424dc0}">
+        <property name="assetPath">
+            <value>0017_explo_bomb_09_PremiumBeat.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>9.133916666666666</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{deea983c-cca6-434e-a742-3a04ff5d8fc3}</destination>
+        </relationship>
+    </object>
+</objects>
