@@ -81,6 +81,7 @@ public class Ship : MonoBehaviour
         }
 
         rb.velocity = rb.velocity.normalized * Mathf.Min(rb.velocity.magnitude, maxSpeed);
+        transform.LookAt(transform.position + rb.velocity);
     }
 
     private void OnDrawGizmos()
