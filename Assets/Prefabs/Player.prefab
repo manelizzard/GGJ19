@@ -94,6 +94,7 @@ MonoBehaviour:
   initialPlanet: {fileID: 0}
   attackLineRenderer: {fileID: 7583225786117720666}
   currentTarget: {fileID: 0}
+  shipCount: 0
   averagePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &5176162588851565398
 GameObject:
