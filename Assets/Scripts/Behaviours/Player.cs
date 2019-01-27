@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
 	internal bool removed = false;
 
-    public static int playersTargetedToCurrentPlanet;
+	public static int playersTargetedToCurrentPlanet;
 
 	private void Awake()
 	{
@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
 
 	private void Start()
 	{
+		displayName = hftGamepad.playerName;
 		GameManager.instance.players.Add(this);
 		GameManager.instance.PlayersInfo.AddPlayerInfo(this);
 	}
@@ -132,7 +133,7 @@ public class Player : MonoBehaviour
 				bool remove = true;
 				foreach (Planet planet in GameManager.instance.playerPlanets[playerId])
 				{
-					remove &= planet.planetAnimation.currentPlanetEnergy == 0;
+					remove &= planet.planetAnimation.currentPlanetEnergy <= 0;
 				}
 
 				if (remove)
@@ -171,13 +172,16 @@ public class Player : MonoBehaviour
 
 	public void RemoveThisPlayer()
 	{
-		Debug.Log("Player removed " + playerId);
-		GameManager.instance.removedPlayers.Add(this);
-		removed = true;
-		if (GameManager.instance.removedPlayers.Count == GameManager.instance.players.Count - 1)
+		if (!GameManager.instance.removedPlayers.Contains(this))
 		{
-			//Game Over
-			GameOverPanel.instance.GameOver();
+			Debug.Log("Player removed " + playerId);
+			GameManager.instance.removedPlayers.Add(this);
+			removed = true;
+			if (GameManager.instance.removedPlayers.Count == GameManager.instance.players.Count - 1)
+			{
+				//Game Over
+				GameOverPanel.instance.GameOver();
+			}
 		}
 	}
 

@@ -171,7 +171,7 @@ public class Ship : MonoBehaviour
 		//currentTarget = null;
 	}
 
-	void RemovedPlayer()
+	/*void RemovedPlayer()
 	{
 		if (GameManager.instance.playerPlanets[owner.playerId].Count <= 0)
 		{
@@ -192,6 +192,6 @@ public class Ship : MonoBehaviour
 				owner.RemoveThisPlayer();
 			}
 		}
-	}
+	}*/
 
 }
