@@ -112,7 +112,7 @@ public class Ship : MonoBehaviour
                 {
                     currentTarget.inhabitants.Remove(this);
                     currentTarget.ComputePlanetOwner();
-					PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
+					//PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
 				}
 			}
 
@@ -120,7 +120,10 @@ public class Ship : MonoBehaviour
             {
                 owner.ships.Remove(this);
 				PlayersInfo.instance.playerInfo.Find(x => x.playerId == owner.playerId).PrintShipCount();
-
+				if(owner.shipCount <= 0)
+				{
+					RemovedPlayer();
+				}
 			}
 			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
@@ -164,5 +167,28 @@ public class Ship : MonoBehaviour
         currentBullet.CancelTarget();
         currentTarget = null;
     }
+
+	void RemovedPlayer()
+	{
+		if(GameManager.instance.playerPlanets[owner.playerId].Count <= 0)
+		{
+			//This player can't play anymore
+			owner.RemoveThisPlayer();
+		}
+		else
+		{
+			bool remove = true;
+			foreach(Planet planet in GameManager.instance.playerPlanets[owner.playerId])
+			{
+				remove &= planet.planetAnimation.currentPlanetEnergy == 0;
+			}
+
+			if (remove)
+			{
+				//This player can't play anymore
+				owner.RemoveThisPlayer();
+			}
+		}
+	}
 
 }
