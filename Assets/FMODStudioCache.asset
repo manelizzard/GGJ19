@@ -19,12 +19,29 @@ MonoBehaviour:
   - {fileID: 114975844797353428}
   - {fileID: 114044469631739300}
   - {fileID: 114129310730691628}
+  - {fileID: 114608705856201590}
   MasterBanks:
   - {fileID: 114407968871548796}
   StringsBanks:
   - {fileID: 114760137609861846}
-  stringsBankWriteTime: 636841959381399843
+  stringsBankWriteTime: 636842020468155232
   cacheVersion: 3
+--- !u!114 &114007990444520552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: lowpass
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114009911355846218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,10 +94,26 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 114688739260950174}
+  - {fileID: 114423278587912252}
   MinDistance: 0
   MaxDistance: 0
   Length: 550
+--- !u!114 &114052921702941504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: lowpass
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114079785345734710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +146,22 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114118059539822804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: music_intensity
+  Min: 0
+  Max: 1
+  Default: 1
 --- !u!114 &114129310730691628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,10 +182,10 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114926085770896010}
+  - {fileID: 114986523799871126}
   MinDistance: 0
   MaxDistance: 0
-  Length: 77217
+  Length: 48113
 --- !u!114 &114139473238178716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +314,22 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114309235222936374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: music_intensity
+  Min: 0
+  Max: 1
+  Default: 1
 --- !u!114 &114328631757963816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,12 +439,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: C:\Users\jfcam\Documents\GGJ19\fmod\gg19fmod\Build\Desktop\Master Bank.bank
-  lastModified: 636841959381359633
+  lastModified: 636842020468115343
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 3839296
+    Value: 3951424
   Exists: 1
+--- !u!114 &114423278587912252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: lowpass
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114428621665328692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,6 +522,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: music_intensity
+  Min: 0
+  Max: 1
+  Default: 0
+--- !u!114 &114470497881361602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: lowpass
   Min: 0
   Max: 1
   Default: 0
@@ -524,6 +621,22 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114587908511926354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: music_intensity
+  Min: 0
+  Max: 1
+  Default: 1
 --- !u!114 &114605166513060620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,6 +653,29 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114608705856201590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/MusicBG
+  guid: be5d18e023b7a14aac0f6713b59807ed
+  Banks:
+  - {fileID: 114407968871548796}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 80000
 --- !u!114 &114642822221597614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,11 +809,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: fmod\gg19fmod\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636841959381399843
+  lastModified: 636842020468155232
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 842
+    Value: 886
   Exists: 1
 --- !u!114 &114762725552444494
 MonoBehaviour:
@@ -695,6 +831,22 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114826380462071568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: music_intensity
+  Min: 0
+  Max: 1
+  Default: 1
 --- !u!114 &114831674445561850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,6 +876,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: music_intensity
+  Min: 0
+  Max: 1
+  Default: 0
+--- !u!114 &114914583977312206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: lowpass
   Min: 0
   Max: 1
   Default: 0
@@ -766,3 +934,19 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 2800
+--- !u!114 &114986523799871126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: music_intensity
+  Min: 0
+  Max: 1
+  Default: 1

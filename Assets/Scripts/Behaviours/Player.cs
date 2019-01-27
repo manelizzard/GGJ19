@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
 
 	internal bool removed = false;
 
+    public static int playersTargetedToCurrentPlanet;
+
 	private void Awake()
 	{
 		hftInput = GetComponent<HFTInput>();
@@ -119,6 +121,8 @@ public class Player : MonoBehaviour
             attackLineRenderer.SetPosition(0, averagePosition);
             attackLineRenderer.SetPosition(1, currentTarget.transform.position);
             lastCommandTime = Time.time;
+
+            playersTargetedToCurrentPlanet++;
         }
 
         bool attackedRightNow = Time.time - lastCommandTime < 1f;
