@@ -18,7 +18,7 @@ public class Planet : MonoBehaviour
     public PlanetAnimation planetAnimation;
     int ownerPlayerId;
     Player previousOwner;
-    Player playerOwner;
+    public Player playerOwner;
 
     const int minShipsToConquer = 0;
 
@@ -131,15 +131,16 @@ public class Planet : MonoBehaviour
         var result = GameManager.instance.players.SingleOrDefault(p => p.playerId == currentWinnerPlayerId);
         if (result != null)
         {
+            if (previousOwner != null)
+            {
+                GameManager.instance.playerPlanets[previousOwner.playerId].Remove(this);
+            }
             previousOwner = playerOwner;
             playerOwner = result;
         }
         if (playerOwner != null)
         {
-            planetAnimation.StartDrainingAnimation();
-
-            playerOwnerMeshRenderer.gameObject.SetActive(true);
-            playerOwnerMeshRenderer.material = playerOwner.playerPlanetMaterial;
+            ConquerBy(playerOwner);
         }
     }
 

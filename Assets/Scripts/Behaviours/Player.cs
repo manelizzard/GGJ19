@@ -51,11 +51,30 @@ public class Player : MonoBehaviour
 		attackLineRenderer.startColor = color;
 		attackLineRenderer.endColor = color;
 		GameManager.instance.playerPlanets.Add(playerId, new List<Planet>());
-		GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[Random.Range(0, GameManager.instance.planets.Count)]);
 
-		// Spawn ships
-		SpawnShips();
-	}
+        var planetIndex = -1;
+        for (var i = 0; i < GameManager.instance.planets.Count; ++i)
+        {
+            var planet = GameManager.instance.planets[i];
+            if (planet.playerOwner == null)
+            {
+                planetIndex = i;
+                break;
+            }
+        }
+
+        if (planetIndex != -1)
+        {
+            GameManager.instance.playerPlanets[playerId].Add(GameManager.instance.planets[planetIndex]);
+
+            // Spawn ships
+            SpawnShips();
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
 	private void Start()
 	{
